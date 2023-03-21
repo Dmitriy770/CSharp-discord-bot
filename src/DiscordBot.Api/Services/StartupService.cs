@@ -32,9 +32,8 @@ public class StartupService
 
             _client.InteractionCreated += async interaction =>
             {
-                var scope = _provider.CreateScope();
                 var ctx = new SocketInteractionContext(_client, interaction);
-                await interactionService.ExecuteCommandAsync(ctx, scope.ServiceProvider);
+                await interactionService.ExecuteCommandAsync(ctx, _provider);
             };
         };
     }

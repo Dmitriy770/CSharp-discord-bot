@@ -32,7 +32,7 @@ public class LogService
             _ => LogLevel.None
         };
 
-        _logger.Log(logLevel, message.Message);
+        _logger.Log(logLevel, message.Exception, message.Message);
         
         return Task.CompletedTask;
     }
