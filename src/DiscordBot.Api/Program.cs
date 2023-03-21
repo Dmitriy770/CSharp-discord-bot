@@ -13,8 +13,9 @@ class Program
                     new Startup(hostBuilderContext.Configuration).ConfigureServices(serviceCollection)
             ).Build();
 
-        host.Services.GetService<StartupService>().RunAsync();
-        
+        host.Services.GetService<StartupService>()?.RunAsync();
+        host.Services.GetService<LogService>()?.Run();
+
         return host.RunAsync();
     }
 }

@@ -15,20 +15,28 @@ public class Startup
 
     public IServiceCollection ConfigureServices(IServiceCollection services)
     {
-        Console.WriteLine(_configuration.GetValue<int>("Aboba"));
-        Console.WriteLine(_configuration["Token"]);
-
-        
         var config = new DiscordSocketConfig()
         {
-            LogLevel = LogSeverity.Verbose,
+            LogLevel = GetDiscordLogLevel(),
             MessageCacheSize = 1000
         };
-        
+
         services.AddSingleton(config);
         services.AddSingleton<DiscordSocketClient>();
         services.AddSingleton<StartupService>();
-        
+        services.AddSingleton<LogService>();
+
         return services;
+    }
+
+    private LogSeverity GetDiscordLogLevel()
+    {
+        var logSeverity = LogSeverity.Error;
+        if (Enum.TryParse(_configuration["Discord:LogLevel"], out LogSeverity logSeverityConfig))
+        {
+            logSeverity = logSeverityConfig;
+        }
+
+        return logSeverity;
     }
 }
