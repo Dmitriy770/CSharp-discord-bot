@@ -14,7 +14,8 @@ class Program
             ).Build();
 
         host.Services.GetService<StartupService>()?.RunAsync();
-        host.Services.GetService<LogService>()?.Run();
+        host.Services.GetService<LogService>();
+        host.Services.GetService<VoiceManagerService>();
 
         return host.RunAsync();
     }

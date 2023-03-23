@@ -12,7 +12,7 @@ public class VoiceManagerModule : InteractionModuleBase<SocketInteractionContext
     }
 
     [Group("set", "Setting the parameters of the voice channel")]
-    public class SubVoiceManagerCommand : InteractionModuleBase<SocketInteractionContext>
+    public class SetVoiceCommands : InteractionModuleBase<SocketInteractionContext>
     {
         [SlashCommand("limit", "Sets the voice channel limit")]
         public async Task SetVoiceLimit(
@@ -28,6 +28,22 @@ public class VoiceManagerModule : InteractionModuleBase<SocketInteractionContext
             string name)
         {
             await RespondAsync($"New voice name: {name}", ephemeral: true);
+        }
+    }
+    
+    [Group("reset", "Resets voice channel parameters")]
+    public class ResetVoiceCommands : InteractionModuleBase<SocketInteractionContext>
+    {
+        [SlashCommand("limit", "Resets voice channel limit")]
+        public async Task ResetVoiceLimit()
+        {
+            await RespondAsync("Reset voice limit");
+        }
+
+        [SlashCommand("name", "Resets voice channel name")]
+        public async Task ResetVoiceName()
+        {
+            await RespondAsync("Reset voice name");
         }
     }
 }

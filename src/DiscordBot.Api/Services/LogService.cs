@@ -12,10 +12,6 @@ public class LogService
     {
         _logger = logger;
         _client = client;
-    }
-
-    public void Run()
-    {
         _client.Log += Log;
     }
 

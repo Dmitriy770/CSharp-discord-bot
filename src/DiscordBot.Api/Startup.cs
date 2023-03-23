@@ -1,5 +1,6 @@
 ﻿using Discord;
 using Discord.WebSocket;
+using DiscordBot.Api.Options;
 using DiscordBot.Api.Services;
 
 namespace DiscordBot.Api;
@@ -21,10 +22,12 @@ public class Startup
             MessageCacheSize = 1000
         };
 
+        services.Configure<GuildOptions>(_configuration.GetSection("Guild"));
         services.AddSingleton(config);
         services.AddSingleton<DiscordSocketClient>();
         services.AddSingleton<StartupService>();
         services.AddSingleton<LogService>();
+        services.AddSingleton<VoiceManagerService>();
 
         return services;
     }

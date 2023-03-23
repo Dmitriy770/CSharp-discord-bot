@@ -28,7 +28,7 @@ public class StartupService
             var interactionService = new InteractionService(_client);
 
             await interactionService.AddModulesAsync(Assembly.GetEntryAssembly(), _provider);
-            await interactionService.RegisterCommandsToGuildAsync(_configuration.GetValue<ulong>("GuildId"));
+            await interactionService.RegisterCommandsToGuildAsync(_configuration.GetValue<ulong>("Guild:Id"));
 
             _client.InteractionCreated += async interaction =>
             {
