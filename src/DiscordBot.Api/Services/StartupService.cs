@@ -5,7 +5,7 @@ using Discord.WebSocket;
 
 namespace DiscordBot.Api.Services;
 
-public class StartupService
+public sealed class StartupService
 {
     private readonly DiscordSocketClient _client;
     private readonly IConfiguration _configuration;

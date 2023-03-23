@@ -2,8 +2,9 @@
 
 namespace DiscordBot.Api.Modules;
 
+[EnabledInDm(false)]
 [Group("voice", "Commands for managing the voice channel")]
-public class VoiceManagerModule : InteractionModuleBase<SocketInteractionContext>
+public sealed class VoiceManagerModule : InteractionModuleBase<SocketInteractionContext>
 {
     [SlashCommand("claim", "Command to capture a voice channel")]
     public async Task ClaimVoice()

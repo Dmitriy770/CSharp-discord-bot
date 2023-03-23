@@ -2,7 +2,7 @@
 
 namespace DiscordBot.Api.Modules;
 
-public class EchoModule : InteractionModuleBase<SocketInteractionContext>
+public sealed class EchoModule : InteractionModuleBase<SocketInteractionContext>
 {
     [SlashCommand("echo", "return your message")]
     public async Task Echo(string input)

@@ -5,7 +5,7 @@ using DiscordBot.Api.Services;
 
 namespace DiscordBot.Api;
 
-public class Startup
+public sealed class Startup
 {
     private readonly IConfiguration _configuration;
 
