@@ -2,6 +2,7 @@
 using Discord.WebSocket;
 using DiscordBot.Api.Options;
 using DiscordBot.Api.Services;
+using DiscordBot.Infrastructure.DependencyInjection;
 
 namespace DiscordBot.Api;
 
@@ -22,12 +23,15 @@ public sealed class Startup
             MessageCacheSize = 1000
         };
 
-        services.Configure<GuildOptions>(_configuration.GetSection("Guild"));
-        services.AddSingleton(config);
-        services.AddSingleton<DiscordSocketClient>();
-        services.AddSingleton<StartupService>();
-        services.AddSingleton<LogService>();
-        services.AddSingleton<VoiceManagerService>();
+        services
+            .Configure<GuildOptions>(_configuration.GetSection("Guild"))
+            .AddSingleton(config)
+            .AddSingleton<DiscordSocketClient>()
+            .AddSingleton<StartupService>()
+            .AddSingleton<LogService>()
+            .AddSingleton<VoiceManagerService>()
+            .AddDomain()
+            .AddInfrastructure();
 
         return services;
     }

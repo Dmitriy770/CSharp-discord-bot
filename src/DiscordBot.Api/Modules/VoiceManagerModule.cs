@@ -1,4 +1,8 @@
-﻿using Discord.Interactions;
+﻿//TODO убрать модуль
+using Discord.Interactions;
+using Discord.WebSocket;
+using DiscordBot.Api.Services;
+using DiscordBot.Domain.Bll.Services.Interfaces;
 
 namespace DiscordBot.Api.Modules;
 
@@ -6,6 +10,7 @@ namespace DiscordBot.Api.Modules;
 [Group("voice", "Commands for managing the voice channel")]
 public sealed class VoiceManagerModule : InteractionModuleBase<SocketInteractionContext>
 {
+
     [SlashCommand("claim", "Command to capture a voice channel")]
     public async Task ClaimVoice()
     {
@@ -15,6 +20,13 @@ public sealed class VoiceManagerModule : InteractionModuleBase<SocketInteraction
     [Group("set", "Setting the parameters of the voice channel")]
     public class SetVoiceCommands : InteractionModuleBase<SocketInteractionContext>
     {
+        private readonly VoiceManagerService _voiceManagerService;
+
+        public SetVoiceCommands(VoiceManagerService voiceManagerService)
+        {
+            _voiceManagerService = voiceManagerService;
+        }
+        
         [SlashCommand("limit", "Sets the voice channel limit")]
         public async Task SetVoiceLimit(
             [Summary("limit", "Maximum number of users"), MinValue(1), MaxValue(99)]
@@ -25,9 +37,11 @@ public sealed class VoiceManagerModule : InteractionModuleBase<SocketInteraction
         
         [SlashCommand("name", "Sets the voice channel name")]
         public async Task SetVoiceName(
-            [Summary("name", "Voice channel names"), MinLength(1), MaxValue(20)]
+            [Summary("name", "Voice channel name"), MinLength(1), MaxValue(20)]
             string name)
         {
+            // _voiceManagerService.SetVoiceName(Context.User.Id, name);
+
             await RespondAsync($"New voice name: {name}", ephemeral: true);
         }
     }

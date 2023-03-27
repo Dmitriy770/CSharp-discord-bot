@@ -1,4 +1,5 @@
-﻿using Discord.Interactions;
+﻿//TODO заменить модуль на сервис с командой, возвращающей информацию о боте
+using Discord.Interactions;
 
 namespace DiscordBot.Api.Modules;
 

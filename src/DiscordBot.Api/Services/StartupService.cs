@@ -23,19 +23,20 @@ public sealed class StartupService
         await _client.LoginAsync(TokenType.Bot, _configuration["Token"]);
         await _client.StartAsync();
         
-        _client.Ready += async () =>
-        {
-            var interactionService = new InteractionService(_client);
-
-            await interactionService.AddModulesAsync(Assembly.GetEntryAssembly(), _provider);
-            await interactionService.RegisterCommandsToGuildAsync(_configuration.GetValue<ulong>("Guild:Id"));
-
-            _client.InteractionCreated += async interaction =>
-            {
-                var ctx = new SocketInteractionContext(_client, interaction);
-                await interactionService.ExecuteCommandAsync(ctx, _provider);
-            };
-        };
+        // TODO убрать обработчик команд для модуля
+        // _client.Ready += async () =>
+        // {
+        //     var interactionService = new InteractionService(_client);
+        //
+        //     await interactionService.AddModulesAsync(Assembly.GetEntryAssembly(), _provider);
+        //     await interactionService.RegisterCommandsToGuildAsync(_configuration.GetValue<ulong>("Guild:Id"));
+        //
+        //     _client.InteractionCreated += async interaction =>
+        //     {
+        //         var ctx = new SocketInteractionContext(_client, interaction);
+        //         await interactionService.ExecuteCommandAsync(ctx, _provider);
+        //     };
+        // };
     }
     
 }
