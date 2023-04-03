@@ -126,102 +126,130 @@ public sealed class VoiceManagerService
 
     private async Task ClaimVoiceHandler(SocketSlashCommand command)
     {
-        try
+        if (command.User is SocketGuildUser guildUser)
         {
-            var guildUser = command.User as SocketGuildUser;
-            var user = new UserModel(
-                Id: command.User.Id,
-                Name: guildUser?.DisplayName ?? command.User.Username
-            );
+            try
+            {
+                var user = new UserModel(
+                    Id: command.User.Id,
+                    Name: guildUser.DisplayName
+                );
 
-            var voiceChannel = guildUser?.VoiceChannel;
-            var userIDs = voiceChannel?.ConnectedUsers.Select(x => x.Id).ToList() ?? new List<ulong>();
-            var voiceModel = voiceChannel == null ? null : new VoiceModel(voiceChannel.Id, userIDs);
+                var voiceChannel = guildUser.VoiceChannel;
+                var userIDs = voiceChannel?.ConnectedUsers.Select(x => x.Id).ToList() ?? new List<ulong>();
+                var voiceModel = voiceChannel == null ? null : new VoiceModel(voiceChannel.Id, userIDs);
 
-            var (voiceParams, voiceIDs) = _voiceService.ClaimVoice(user, voiceModel);
-            UpdateUserVoices(voiceParams, voiceIDs);
+                var (voiceParams, voiceIDs) = _voiceService.ClaimVoice(user, voiceModel);
+                UpdateUserVoices(voiceParams, voiceIDs);
 
-            await command.RespondAsync($"Voice claimed", ephemeral: true);
+                await command.RespondAsync($"Voice claimed", ephemeral: true);
+            }
+            catch (ArgumentException e)
+            {
+                await command.RespondAsync(e.Message, ephemeral: true);
+            }
         }
-        catch (ArgumentException e)
+        else
         {
-            await command.RespondAsync(e.Message, ephemeral: true);
+            await command.RespondAsync("Unexpected error", ephemeral: true);
         }
     }
 
     private async Task SetVoiceLimitHandler(SocketSlashCommand command)
     {
-        //TODO поменять тип лимита на byte
-        var limit = Convert.ToByte(command.Data.Options.First().Options.First().Options.First().Value);
-        try
+        if (command.User is SocketGuildUser guildUser)
         {
-            var guildUser = command.User as SocketGuildUser;
-            var user = new UserModel(
-                Id: command.User.Id,
-                Name: guildUser?.DisplayName ?? command.User.Username
-            );
+            var limit = Convert.ToByte(command.Data.Options.First().Options.First().Options.First().Value);
+            try
+            {
+                var user = new UserModel(
+                    Id: command.User.Id,
+                    Name: guildUser.DisplayName
+                );
 
-            var (voiceParams, voiceIDs) = _voiceService.SetVoiceLimit(user, limit);
-            UpdateUserVoices(voiceParams, voiceIDs);
+                var (voiceParams, voiceIDs) = _voiceService.SetVoiceLimit(user, limit);
+                UpdateUserVoices(voiceParams, voiceIDs);
 
-            await command.RespondAsync($"New voice channel limit: {limit}", ephemeral: true);
+                await command.RespondAsync($"New voice channel limit: {limit}", ephemeral: true);
+            }
+            catch (ArgumentOutOfRangeException e)
+            {
+                await command.RespondAsync(e.Message, ephemeral: true);
+            }
         }
-        catch (ArgumentOutOfRangeException e)
+        else
         {
-            await command.RespondAsync(e.Message, ephemeral: true);
+            await command.RespondAsync("Unexpected error", ephemeral: true);
         }
     }
 
     private async Task ResetVoiceLimitHandler(SocketSlashCommand command)
     {
-        var guildUser = command.User as SocketGuildUser;
-        var userModel = new UserModel(
-            Id: command.User.Id,
-            Name: guildUser?.DisplayName ?? command.User.Username
-        );
-        var (voiceParams, voiceIDs) = _voiceService.SetVoiceLimit(userModel, null);
+        if (command.User is SocketGuildUser guildUser)
+        {
+            var userModel = new UserModel(
+                Id: command.User.Id,
+                Name: guildUser.DisplayName
+            );
+            var (voiceParams, voiceIDs) = _voiceService.SetVoiceLimit(userModel, null);
 
-        UpdateUserVoices(voiceParams, voiceIDs);
+            UpdateUserVoices(voiceParams, voiceIDs);
 
-        await command.RespondAsync("Voice channel limit reset", ephemeral: true);
+            await command.RespondAsync("Voice channel limit reset", ephemeral: true);
+        }
+        else
+        {
+            await command.RespondAsync("Unexpected error", ephemeral: true);
+        }
     }
 
     private async Task SetVoiceNameHandler(SocketSlashCommand command)
     {
-        var name = command.Data.Options.First().Options.First().Options.First().Value as string;
-
-        try
+        if (command.User is SocketGuildUser guildUser)
         {
-            var guildUser = command.User as SocketGuildUser;
-            var user = new UserModel(
-                Id: command.User.Id,
-                //TODO проверить нужен ли command.User.Username
-                Name: guildUser?.DisplayName ?? command.User.Username
-            );
-            var (voiceParams, voiceIDs) = _voiceService.SetVoiceName(user, name);
-            UpdateUserVoices(voiceParams, voiceIDs);
+            var name = command.Data.Options.First().Options.First().Options.First().Value as string;
 
-            await command.RespondAsync($"New voice channel name: {name}", ephemeral: true);
+            try
+            {
+                var user = new UserModel(
+                    Id: command.User.Id,
+                    Name: guildUser.DisplayName
+                );
+                var (voiceParams, voiceIDs) = _voiceService.SetVoiceName(user, name);
+                UpdateUserVoices(voiceParams, voiceIDs);
+
+                await command.RespondAsync($"New voice channel name: {name}", ephemeral: true);
+            }
+            catch (ArgumentException e)
+            {
+                await command.RespondAsync(e.Message, ephemeral: true);
+            }
         }
-        catch (ArgumentException e)
+        else
         {
-            await command.RespondAsync(e.Message, ephemeral: true);
+            await command.RespondAsync("Unexpected error", ephemeral: true);
         }
     }
 
     private async Task ResetVoiceNameHandler(SocketSlashCommand command)
     {
-        var guildUser = command.User as SocketGuildUser;
-        var userModel = new UserModel(
-            Id: command.User.Id,
-            //TODO проверить нужен ли command.User.Username
-            Name: guildUser?.DisplayName ?? command.User.Username
-        );
-        var (voiceParams, voiceIDs) = _voiceService.SetVoiceName(userModel, null);
+        if (command.User is SocketGuildUser guildUser)
+        {
+            var userModel = new UserModel(
+                Id: command.User.Id,
+                Name: guildUser.DisplayName
+            );
 
-        UpdateUserVoices(voiceParams, voiceIDs);
+            var (voiceParams, voiceIDs) = _voiceService.SetVoiceName(userModel, null);
 
-        await command.RespondAsync("Voice channel name reset", ephemeral: true);
+            UpdateUserVoices(voiceParams, voiceIDs);
+
+            await command.RespondAsync("Voice channel name reset", ephemeral: true);
+        }
+        else
+        {
+            await command.RespondAsync("Unexpected error", ephemeral: true);
+        }
     }
 
     private void UpdateUserVoices(VoiceParamsModel voiceParams, IEnumerable<ulong> voiceIDs)
@@ -246,7 +274,7 @@ public sealed class VoiceManagerService
         {
             var userModel = new UserModel(
                 Id: guildUser.Id,
-                Name: guildUser.DisplayName ?? user.Username
+                Name: guildUser.DisplayName
             );
             var voiceParams = _voiceService.GetVoiceParams(userModel);
 
