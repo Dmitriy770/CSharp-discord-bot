@@ -1,7 +1,6 @@
 ﻿namespace DiscordBot.Domain.Bll.Models;
 
-public record UserVoiceModel(
-    IEnumerable<ulong> VoiceIDs,
+public record VoiceModel(
     string? Name,
     int? Limit
 );

@@ -23,6 +23,16 @@ internal class SessionRepository : ISessionRepository
         return userVoiceChannels;
     }
 
+    public ulong? GetOwner(ulong voiceId)
+    {
+        if (_sessionData.ContainsKey(voiceId))
+        {
+            return _sessionData[voiceId];
+        }
+
+        return null;
+    }
+
     public void Set(ulong userId, ulong voiceId)
     {
         _sessionData[voiceId] = userId;

@@ -16,53 +16,69 @@ public class VoiceService : IVoiceService
         _sessionRepository = sessionRepository;
     }
 
-    public IEnumerable<ulong> SetVoiceLimit(ulong userId, int? limit)
+    //TODO создать модель VoiceModel с id и участниками, текущую VoiceModel переименовать в VoiceParamsModel
+    public UpdateVoicesModel ClaimVoice(UserModel user, ulong? voiceId, IEnumerable<ulong> userIDs)
+    {
+        if (voiceId == null)
+        {
+            throw new ArgumentException("User not in voice");
+        }
+
+        var ownerId = _sessionRepository.GetOwner(voiceId.Value);
+
+        if (userIDs.Any(x => x == ownerId))
+        {
+            //TODO добавить кастомные ошибки
+            throw new ArgumentException("Owner in voice");
+        }
+
+        _sessionRepository.Set(user.Id, voiceId.Value);
+
+        return new UpdateVoicesModel(
+            Params: GetVoiceParams(user),
+            VoiceIDs: new[] { voiceId.Value }
+        );
+    }
+
+    public UpdateVoicesModel SetVoiceLimit(UserModel user, int? limit)
     {
         if (limit is < 1 or > 99)
         {
             throw new ArgumentOutOfRangeException(nameof(limit));
         }
 
-        var voiceEntity = _repository.Get(userId) with { Limit = limit };
+        var voiceEntity = _repository.Get(user.Id) with { Limit = limit };
         _repository.SetOrUpdate(voiceEntity);
 
-        return _sessionRepository.Get(userId);
+        return new UpdateVoicesModel(
+            Params: GetVoiceParams(user),
+            VoiceIDs: _sessionRepository.Get(user.Id)
+        );
     }
 
-    public UserVoiceModel SetVoiceName(UserEntity user, string? name)
+    public UpdateVoicesModel SetVoiceName(UserModel user, string? name)
     {
         if (name?.Length is < 1 or > 20)
         {
-            throw new ArgumentException("name length must be between 1 and 20");
+            throw new ArgumentException("Name length must be between 1 and 20");
         }
 
         var voiceEntity = _repository.Get(user.Id) with { Name = name };
         _repository.SetOrUpdate(voiceEntity);
 
-        var voiceParams = _repository.Get(user.Id);
-        return new UserVoiceModel(
-            VoiceIDs: _sessionRepository.Get(user.Id),
-            Name: voiceParams.Name ?? user.Name,
-            Limit: voiceParams.Limit
+        return new UpdateVoicesModel(
+            Params: GetVoiceParams(user),
+            VoiceIDs: _sessionRepository.Get(user.Id)
         );
     }
 
-    //TODO заменить входной параметр на userEntity
-    public UserVoiceModel GetVoiceParams(ulong id)
+    public VoiceModel GetVoiceParams(UserModel user)
     {
-        var voiceEntity = _repository.Get(id);
-        //TODO Добавить модель без массива с ID
-        return new UserVoiceModel(
-            VoiceIDs: Array.Empty<ulong>(),
-            Name: voiceEntity.Name,
+        var voiceEntity = _repository.Get(user.Id);
+        return new VoiceModel(
+            Name: voiceEntity.Name ?? $"{user.Name}'s channel",
             Limit: voiceEntity.Limit
         );
-    }
-
-    //TODO убрать
-    public IEnumerable<ulong> GetUserVoiceChannels(ulong userId)
-    {
-        return _sessionRepository.Get(userId);
     }
 
     public void SetUserVoice(ulong userId, ulong voiceId)

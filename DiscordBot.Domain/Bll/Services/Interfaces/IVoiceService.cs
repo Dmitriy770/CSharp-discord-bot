@@ -5,13 +5,12 @@ namespace DiscordBot.Domain.Bll.Services.Interfaces;
 
 public interface IVoiceService
 {
-    IEnumerable<ulong> SetVoiceLimit(ulong userId, int? limit);
+    public UpdateVoicesModel ClaimVoice(UserModel user, ulong? voiceId, IEnumerable<ulong> userIDs);
+    public UpdateVoicesModel SetVoiceLimit(UserModel user, int? limit);
 
-    UserVoiceModel SetVoiceName(UserEntity user, string? name);
+    public UpdateVoicesModel SetVoiceName(UserModel user, string? name);
 
-    UserVoiceModel GetVoiceParams(ulong userId);
-
-    public IEnumerable<ulong> GetUserVoiceChannels(ulong userId);
+    public VoiceModel GetVoiceParams(UserModel user);
 
     public void SetUserVoice(ulong userId, ulong voiceId);
 
