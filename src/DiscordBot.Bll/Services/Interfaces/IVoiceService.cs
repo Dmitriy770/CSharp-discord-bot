@@ -1,7 +1,6 @@
-﻿using DiscordBot.Domain.Bll.Models;
-using DiscordBot.Domain.Entities;
+﻿using DiscordBot.Bll.Models;
 
-namespace DiscordBot.Domain.Bll.Services.Interfaces;
+namespace DiscordBot.Bll.Services.Interfaces;
 
 public interface IVoiceService
 {

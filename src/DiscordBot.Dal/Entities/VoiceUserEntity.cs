@@ -1,4 +1,4 @@
-﻿namespace DiscordBot.Domain.Entities;
+﻿namespace DiscordBot.Dal.Entities;
 
 public sealed record VoiceUserEntity(
     ulong Id,

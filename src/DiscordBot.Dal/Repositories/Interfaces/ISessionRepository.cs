@@ -1,6 +1,4 @@
-﻿using DiscordBot.Domain.Entities;
-
-namespace DiscordBot.Domain.Interfaces;
+﻿namespace DiscordBot.Dal.Repositories.Interfaces;
 
 public interface ISessionRepository
 {

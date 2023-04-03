@@ -13,6 +13,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\DiscordBot.Infrastructure\DiscordBot.Infrastructure.csproj" />
+      <ProjectReference Include="..\DiscordBot.Bll\DiscordBot.Bll.csproj" />
     </ItemGroup>
 </Project>

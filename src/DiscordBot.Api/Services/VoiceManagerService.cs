@@ -2,9 +2,8 @@
 using Discord.Net;
 using Discord.WebSocket;
 using DiscordBot.Api.Options;
-using DiscordBot.Domain.Bll.Models;
-using DiscordBot.Domain.Bll.Services.Interfaces;
-using DiscordBot.Domain.Entities;
+using DiscordBot.Bll.Models;
+using DiscordBot.Bll.Services.Interfaces;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 

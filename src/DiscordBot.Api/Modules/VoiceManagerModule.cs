@@ -1,8 +1,6 @@
 ﻿//TODO убрать модуль
 using Discord.Interactions;
-using Discord.WebSocket;
 using DiscordBot.Api.Services;
-using DiscordBot.Domain.Bll.Services.Interfaces;
 
 namespace DiscordBot.Api.Modules;
 

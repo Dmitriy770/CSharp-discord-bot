@@ -1,8 +1,6 @@
-﻿using System.Dynamic;
-using DiscordBot.Domain.Entities;
-using DiscordBot.Domain.Interfaces;
+﻿using DiscordBot.Dal.Repositories.Interfaces;
 
-namespace DiscordBot.Infrastructure.Dal.Repositories;
+namespace DiscordBot.Dal.Repositories;
 
 internal class SessionRepository : ISessionRepository
 {

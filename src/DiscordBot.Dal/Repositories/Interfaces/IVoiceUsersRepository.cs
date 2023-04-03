@@ -1,6 +1,6 @@
-﻿using DiscordBot.Domain.Entities;
+﻿using DiscordBot.Dal.Entities;
 
-namespace DiscordBot.Domain.Interfaces;
+namespace DiscordBot.Dal.Repositories.Interfaces;
 
 public interface IVoiceUsersRepository
 {

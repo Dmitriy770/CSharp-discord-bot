@@ -1,9 +1,8 @@
-﻿using DiscordBot.Domain.Bll.Models;
-using DiscordBot.Domain.Bll.Services.Interfaces;
-using DiscordBot.Domain.Entities;
-using DiscordBot.Domain.Interfaces;
+﻿using DiscordBot.Bll.Models;
+using DiscordBot.Bll.Services.Interfaces;
+using DiscordBot.Dal.Repositories.Interfaces;
 
-namespace DiscordBot.Domain.Bll.Services;
+namespace DiscordBot.Bll.Services;
 
 public class VoiceService : IVoiceService
 {

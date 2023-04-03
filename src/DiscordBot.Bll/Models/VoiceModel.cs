@@ -1,4 +1,4 @@
-﻿namespace DiscordBot.Domain.Bll.Models;
+﻿namespace DiscordBot.Bll.Models;
 
 public record VoiceModel(
     string? Name,

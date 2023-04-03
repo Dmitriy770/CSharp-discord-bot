@@ -4,9 +4,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2E320DC9-191
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiscordBot.Api", "src\DiscordBot.Api\DiscordBot.Api.csproj", "{8C610F0A-9BEB-4307-9A32-4B5798C92728}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiscordBot.Infrastructure", "DiscordBot.Infrastructure\DiscordBot.Infrastructure.csproj", "{C012DB77-1FF3-4398-8F8F-54AF6CFB870B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiscordBot.Dal", "src\DiscordBot.Dal\DiscordBot.Dal.csproj", "{C012DB77-1FF3-4398-8F8F-54AF6CFB870B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiscordBot.Domain", "DiscordBot.Domain\DiscordBot.Domain.csproj", "{27493B20-FEE4-478D-92F5-909A2FC533ED}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiscordBot.Bll", "src\DiscordBot.Bll\DiscordBot.Bll.csproj", "{27493B20-FEE4-478D-92F5-909A2FC533ED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
