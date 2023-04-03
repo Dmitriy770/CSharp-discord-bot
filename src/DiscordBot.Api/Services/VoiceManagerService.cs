@@ -152,7 +152,7 @@ public sealed class VoiceManagerService
     private async Task SetVoiceLimitHandler(SocketSlashCommand command)
     {
         //TODO поменять тип лимита на byte
-        var limit = Convert.ToInt32(command.Data.Options.First().Options.First().Options.First().Value);
+        var limit = Convert.ToByte(command.Data.Options.First().Options.First().Options.First().Value);
         try
         {
             var guildUser = command.User as SocketGuildUser;
@@ -224,15 +224,15 @@ public sealed class VoiceManagerService
         await command.RespondAsync("Voice channel name reset", ephemeral: true);
     }
 
-    private void UpdateUserVoices(VoiceParamsModel voiceParamsParams, IEnumerable<ulong> voiceIDs)
+    private void UpdateUserVoices(VoiceParamsModel voiceParams, IEnumerable<ulong> voiceIDs)
     {
         foreach (var voiceId in voiceIDs)
         {
             var voiceChannel = _client.GetChannel(voiceId) as SocketVoiceChannel;
             voiceChannel?.ModifyAsync(x =>
             {
-                x.Name = voiceParamsParams.Name;
-                x.UserLimit = voiceParamsParams.Limit;
+                x.Name = voiceParams.Name;
+                x.UserLimit = voiceParams.Limit;
             });
         }
     }

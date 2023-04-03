@@ -43,7 +43,7 @@ public class VoiceService : IVoiceService
         );
     }
 
-    public UpdateVoicesModel SetVoiceLimit(UserModel user, int? limit)
+    public UpdateVoicesModel SetVoiceLimit(UserModel user, byte? limit)
     {
         if (limit is < 1 or > 99)
         {

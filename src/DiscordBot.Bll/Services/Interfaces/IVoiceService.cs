@@ -5,7 +5,7 @@ namespace DiscordBot.Bll.Services.Interfaces;
 public interface IVoiceService
 {
     public UpdateVoicesModel ClaimVoice(UserModel user, VoiceModel? voiceModel);
-    public UpdateVoicesModel SetVoiceLimit(UserModel user, int? limit);
+    public UpdateVoicesModel SetVoiceLimit(UserModel user, byte? limit);
 
     public UpdateVoicesModel SetVoiceName(UserModel user, string? name);
 

@@ -2,5 +2,5 @@
 
 public record VoiceParamsModel(
     string? Name,
-    int? Limit
+    byte? Limit
 );

@@ -3,5 +3,5 @@
 public sealed record VoiceUserEntity(
     ulong Id,
     string? Name,
-    int? Limit
+    byte? Limit
 );
