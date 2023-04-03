@@ -1,8 +1,8 @@
-﻿using System.Collections;
-using Discord;
+﻿using Discord;
 using Discord.Net;
 using Discord.WebSocket;
 using DiscordBot.Api.Options;
+using DiscordBot.Bll.Exceptions;
 using DiscordBot.Bll.Models;
 using DiscordBot.Bll.Services.Interfaces;
 using Microsoft.Extensions.Options;
@@ -144,14 +144,22 @@ public sealed class VoiceManagerService
 
                 await command.RespondAsync($"Voice claimed", ephemeral: true);
             }
-            catch (ArgumentException e)
+            catch (OwnerInVoiceException e)
+            {
+                await command.RespondAsync(e.Message, ephemeral: true);
+            }
+            catch (UserNotInVoiceException e)
+            {
+                await command.RespondAsync(e.Message, ephemeral: true);
+            }
+            catch (VoiceClaimedException e)
             {
                 await command.RespondAsync(e.Message, ephemeral: true);
             }
         }
         else
         {
-            await command.RespondAsync("Unexpected error", ephemeral: true);
+            await command.RespondAsync("You must be a server member", ephemeral: true);
         }
     }
 
@@ -179,7 +187,7 @@ public sealed class VoiceManagerService
         }
         else
         {
-            await command.RespondAsync("Unexpected error", ephemeral: true);
+            await command.RespondAsync("You must be a server member", ephemeral: true);
         }
     }
 
@@ -199,7 +207,7 @@ public sealed class VoiceManagerService
         }
         else
         {
-            await command.RespondAsync("Unexpected error", ephemeral: true);
+            await command.RespondAsync("You must be a server member", ephemeral: true);
         }
     }
 
@@ -220,14 +228,14 @@ public sealed class VoiceManagerService
 
                 await command.RespondAsync($"New voice channel name: {name}", ephemeral: true);
             }
-            catch (ArgumentException e)
+            catch (ArgumentOutOfRangeException e)
             {
                 await command.RespondAsync(e.Message, ephemeral: true);
             }
         }
         else
         {
-            await command.RespondAsync("Unexpected error", ephemeral: true);
+            await command.RespondAsync("You must be a server member", ephemeral: true);
         }
     }
 
@@ -248,7 +256,7 @@ public sealed class VoiceManagerService
         }
         else
         {
-            await command.RespondAsync("Unexpected error", ephemeral: true);
+            await command.RespondAsync("You must be a server member", ephemeral: true);
         }
     }
 

@@ -1,4 +1,5 @@
-﻿using DiscordBot.Bll.Models;
+﻿using DiscordBot.Bll.Exceptions;
+using DiscordBot.Bll.Models;
 using DiscordBot.Bll.Services.Interfaces;
 using DiscordBot.Dal.Repositories.Interfaces;
 
@@ -19,20 +20,19 @@ public class VoiceService : IVoiceService
     {
         if (voiceModel == null)
         {
-            throw new ArgumentException("User not in voice", nameof(voiceModel));
+            throw new UserNotInVoiceException();
         }
 
         var ownerId = _sessionRepository.GetOwner(voiceModel.Id);
 
         if (user.Id == ownerId)
         {
-            throw new ArgumentException("You're owner of this channel", nameof(voiceModel.Id));
+            throw new VoiceClaimedException();
         }
 
         if (voiceModel.UserIDs.Any(x => x == ownerId))
         {
-            //TODO добавить кастомные ошибки
-            throw new ArgumentException("Owner in voice", nameof(voiceModel.Id));
+            throw new OwnerInVoiceException();
         }
 
         _sessionRepository.Set(user.Id, voiceModel.Id);
@@ -47,7 +47,7 @@ public class VoiceService : IVoiceService
     {
         if (limit is < 1 or > 99)
         {
-            throw new ArgumentOutOfRangeException(nameof(limit));
+            throw new ArgumentOutOfRangeException(nameof(limit), "limit must be between 1 and 99");
         }
 
         var voiceEntity = _repository.Get(user.Id) with { Limit = limit };
@@ -63,7 +63,7 @@ public class VoiceService : IVoiceService
     {
         if (name?.Length is < 1 or > 20)
         {
-            throw new ArgumentException("Name length must be between 1 and 20");
+            throw new ArgumentOutOfRangeException(nameof(name), "Name length must be between 1 and 20");
         }
 
         var voiceEntity = _repository.Get(user.Id) with { Name = name };
