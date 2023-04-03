@@ -15,27 +15,31 @@ public class VoiceService : IVoiceService
         _sessionRepository = sessionRepository;
     }
 
-    //TODO создать модель VoiceModel с id и участниками, текущую VoiceModel переименовать в VoiceParamsModel
-    public UpdateVoicesModel ClaimVoice(UserModel user, ulong? voiceId, IEnumerable<ulong> userIDs)
+    public UpdateVoicesModel ClaimVoice(UserModel user, VoiceModel? voiceModel)
     {
-        if (voiceId == null)
+        if (voiceModel == null)
         {
-            throw new ArgumentException("User not in voice");
+            throw new ArgumentException("User not in voice", nameof(voiceModel));
         }
 
-        var ownerId = _sessionRepository.GetOwner(voiceId.Value);
+        var ownerId = _sessionRepository.GetOwner(voiceModel.Id);
 
-        if (userIDs.Any(x => x == ownerId))
+        if (user.Id == ownerId)
+        {
+            throw new ArgumentException("You're owner of this channel", nameof(voiceModel.Id));
+        }
+
+        if (voiceModel.UserIDs.Any(x => x == ownerId))
         {
             //TODO добавить кастомные ошибки
-            throw new ArgumentException("Owner in voice");
+            throw new ArgumentException("Owner in voice", nameof(voiceModel.Id));
         }
 
-        _sessionRepository.Set(user.Id, voiceId.Value);
+        _sessionRepository.Set(user.Id, voiceModel.Id);
 
         return new UpdateVoicesModel(
             Params: GetVoiceParams(user),
-            VoiceIDs: new[] { voiceId.Value }
+            VoiceIDs: new[] { voiceModel.Id }
         );
     }
 
@@ -71,10 +75,10 @@ public class VoiceService : IVoiceService
         );
     }
 
-    public VoiceModel GetVoiceParams(UserModel user)
+    public VoiceParamsModel GetVoiceParams(UserModel user)
     {
         var voiceEntity = _repository.Get(user.Id);
-        return new VoiceModel(
+        return new VoiceParamsModel(
             Name: voiceEntity.Name ?? $"{user.Name}'s channel",
             Limit: voiceEntity.Limit
         );

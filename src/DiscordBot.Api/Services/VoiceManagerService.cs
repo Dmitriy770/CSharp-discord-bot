@@ -1,4 +1,5 @@
-﻿using Discord;
+﻿using System.Collections;
+using Discord;
 using Discord.Net;
 using Discord.WebSocket;
 using DiscordBot.Api.Options;
@@ -134,11 +135,10 @@ public sealed class VoiceManagerService
             );
 
             var voiceChannel = guildUser?.VoiceChannel;
+            var userIDs = voiceChannel?.ConnectedUsers.Select(x => x.Id).ToList() ?? new List<ulong>();
+            var voiceModel = voiceChannel == null ? null : new VoiceModel(voiceChannel.Id, userIDs);
 
-            var userIds = voiceChannel?.ConnectedUsers.Select(x => x.Id) ?? new List<ulong>();
-
-            //TODO есть смысл поменять параметр на IEnumerable<ulong>?
-            var (voiceParams, voiceIDs) = _voiceService.ClaimVoice(user, voiceChannel?.Id, userIds);
+            var (voiceParams, voiceIDs) = _voiceService.ClaimVoice(user, voiceModel);
             UpdateUserVoices(voiceParams, voiceIDs);
 
             await command.RespondAsync($"Voice claimed", ephemeral: true);
@@ -224,15 +224,15 @@ public sealed class VoiceManagerService
         await command.RespondAsync("Voice channel name reset", ephemeral: true);
     }
 
-    private void UpdateUserVoices(VoiceModel voiceParams, IEnumerable<ulong> voiceIDs)
+    private void UpdateUserVoices(VoiceParamsModel voiceParamsParams, IEnumerable<ulong> voiceIDs)
     {
         foreach (var voiceId in voiceIDs)
         {
             var voiceChannel = _client.GetChannel(voiceId) as SocketVoiceChannel;
             voiceChannel?.ModifyAsync(x =>
             {
-                x.Name = voiceParams.Name;
-                x.UserLimit = voiceParams.Limit;
+                x.Name = voiceParamsParams.Name;
+                x.UserLimit = voiceParamsParams.Limit;
             });
         }
     }

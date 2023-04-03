@@ -1,6 +1,6 @@
 ﻿namespace DiscordBot.Bll.Models;
 
 public record UpdateVoicesModel(
-    VoiceModel Params,
+    VoiceParamsModel Params,
     IEnumerable<ulong> VoiceIDs
 );
