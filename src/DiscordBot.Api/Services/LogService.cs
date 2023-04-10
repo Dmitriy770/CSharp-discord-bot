@@ -6,13 +6,11 @@ namespace DiscordBot.Api.Services;
 public class LogService
 {
     private readonly ILogger<LogService> _logger;
-    private readonly DiscordSocketClient _client;
 
     public LogService(ILogger<LogService> logger, DiscordSocketClient client)
     {
         _logger = logger;
-        _client = client;
-        _client.Log += Log;
+        client.Log += Log;
     }
 
     private Task Log(LogMessage message)
