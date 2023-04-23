@@ -1,19 +1,20 @@
-﻿using Discord.WebSocket;
+﻿using Discord;
+using Discord.WebSocket;
 using DiscordBot.Bll.Models;
 
 namespace DiscordBot.Api.Extensions;
 
 public static class SocketVoiceChannelExtensions
 {
-    public static SocketVoiceChannel UpdateParams(
-        this SocketVoiceChannel socketVoiceChannel,
-        VoiceParamsModel voiceParams)
+    public static SocketVoiceChannel UpdateProperties(
+        this SocketVoiceChannel channel,
+        VoicePropertiesModel properties)
     {
-        socketVoiceChannel.ModifyAsync(x =>
+        channel.ModifyAsync(o =>
         {
-            x.Name = voiceParams.Name;
-            x.UserLimit = voiceParams.Limit;
+            o.Name = properties.Name ?? Optional<string>.Unspecified;
+            o.UserLimit = properties.UserLimit ?? Optional<int?>.Unspecified;
         });
-        return socketVoiceChannel;
+        return channel;
     }
 }
