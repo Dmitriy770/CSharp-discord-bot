@@ -1,0 +1,11 @@
+﻿version: "3.8"
+
+services:
+  discord-bot:
+    restart: unless-stopped
+    container_name: discord-bot
+    build:
+      context: .
+      dockerfile: src/DiscordBot.Api/Dockerfile
+    environment:
+      token: ""
