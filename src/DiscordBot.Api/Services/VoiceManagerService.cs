@@ -4,7 +4,6 @@ using Discord.WebSocket;
 using DiscordBot.Api.Extensions;
 using DiscordBot.Api.Options;
 using DiscordBot.Bll.Exceptions;
-using DiscordBot.Bll.Models;
 using DiscordBot.Bll.Services.Interfaces;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -34,7 +33,7 @@ public sealed class VoiceManagerService
 
             var guildCommand = new SlashCommandBuilder()
                 .AddVoiceManagerCommands();
-                
+
             try
             {
                 await _client.Rest.CreateGuildCommand(guildCommand.Build(), _guild.Id);
@@ -99,19 +98,20 @@ public sealed class VoiceManagerService
         {
             try
             {
-                var user = new UserModel(
-                    Id: command.User.Id,
-                    Name: guildUser.DisplayName
-                );
-
                 var voiceChannel = guildUser.VoiceChannel;
-                var userIDs = voiceChannel?.ConnectedUsers.Select(x => x.Id).ToList() ?? new List<ulong>();
-                var voiceModel = voiceChannel == null ? null : new VoiceModel(voiceChannel.Id, userIDs);
+                var userIDs = voiceChannel?.ConnectedUsers
+                    .Select(x => x.Id).ToArray();
+                
+                _voiceService.ClaimVoice(
+                    guildUser.Id,
+                    voiceChannel?.Id,
+                    userIDs);
 
-                var (voiceParams, voiceIDs) = _voiceService.ClaimVoice(user, voiceModel);
-                UpdateUserVoices(voiceParams, voiceIDs);
+                var properties = _voiceService.GetProperties(guildUser.Id);
+                properties.Name = properties.Name.IsSpecified ? properties.Name : $"{guildUser.DisplayName}'s channel";
+                voiceChannel?.UpdateAsync(properties);
 
-                await command.RespondAsync($"Voice claimed", ephemeral: true);
+                await command.RespondAsync("Voice claimed!", ephemeral: true);
             }
             catch (OwnerInVoiceException e)
             {
@@ -136,18 +136,24 @@ public sealed class VoiceManagerService
     {
         if (command.User is SocketGuildUser guildUser)
         {
-            var limit = Convert.ToByte(command.Data.Options.First().Options.First().Options.First().Value);
+            var userLimit = Convert.ToByte(command.Data.Options.First().Options.First().Options.First().Value);
             try
             {
-                var user = new UserModel(
-                    Id: command.User.Id,
-                    Name: guildUser.DisplayName
-                );
+                var properties = new VoiceChannelProperties()
+                {
+                    UserLimit = userLimit
+                };
 
-                var (voiceParams, voiceIDs) = _voiceService.SetVoiceLimit(user, limit);
-                UpdateUserVoices(voiceParams, voiceIDs);
+                _voiceService.SetOrUpdateProperties(guildUser.Id, properties);
 
-                await command.RespondAsync($"New voice channel limit: {limit}", ephemeral: true);
+                var voiceId = _voiceService.GetUserVoice(guildUser.Id);
+
+                if (voiceId is not null && _client.GetChannel(voiceId.Value) is SocketVoiceChannel channel)
+                {
+                    await channel.UpdateAsync(properties);
+                }
+
+                await command.RespondAsync($"New voice channel limit: {userLimit}", ephemeral: true);
             }
             catch (ArgumentOutOfRangeException e)
             {
@@ -164,13 +170,18 @@ public sealed class VoiceManagerService
     {
         if (command.User is SocketGuildUser guildUser)
         {
-            var userModel = new UserModel(
-                Id: command.User.Id,
-                Name: guildUser.DisplayName
-            );
-            var (voiceParams, voiceIDs) = _voiceService.SetVoiceLimit(userModel, null);
+            var properties = new VoiceChannelProperties()
+            {
+                UserLimit = null
+            };
+            _voiceService.SetOrUpdateProperties(guildUser.Id, properties);
 
-            UpdateUserVoices(voiceParams, voiceIDs);
+            var voiceId = _voiceService.GetUserVoice(guildUser.Id);
+
+            if (voiceId is not null && _client.GetChannel(voiceId.Value) is SocketVoiceChannel channel)
+            {
+                await channel.UpdateAsync(properties);
+            }
 
             await command.RespondAsync("Voice channel limit reset", ephemeral: true);
         }
@@ -188,12 +199,19 @@ public sealed class VoiceManagerService
 
             try
             {
-                var user = new UserModel(
-                    Id: command.User.Id,
-                    Name: guildUser.DisplayName
-                );
-                var (voiceParams, voiceIDs) = _voiceService.SetVoiceName(user, name);
-                UpdateUserVoices(voiceParams, voiceIDs);
+                var properties = new VoiceChannelProperties()
+                {
+                    Name = name
+                };
+
+                _voiceService.SetOrUpdateProperties(guildUser.Id, properties);
+
+                var voiceId = _voiceService.GetUserVoice(guildUser.Id);
+
+                if (voiceId is not null && _client.GetChannel(voiceId.Value) is SocketVoiceChannel channel)
+                {
+                    await channel.UpdateAsync(properties);
+                }
 
                 await command.RespondAsync($"New voice channel name: {name}", ephemeral: true);
             }
@@ -212,33 +230,24 @@ public sealed class VoiceManagerService
     {
         if (command.User is SocketGuildUser guildUser)
         {
-            var userModel = new UserModel(
-                Id: command.User.Id,
-                Name: guildUser.DisplayName
-            );
+            var properties = new VoiceChannelProperties
+            {
+                Name = null
+            };
+            _voiceService.SetOrUpdateProperties(guildUser.Id, properties);
 
-            var (voiceParams, voiceIDs) = _voiceService.SetVoiceName(userModel, null);
+            var voiceId = _voiceService.GetUserVoice(guildUser.Id);
 
-            UpdateUserVoices(voiceParams, voiceIDs);
+            if (voiceId is not null && _client.GetChannel(voiceId.Value) is SocketVoiceChannel channel)
+            {
+                await channel.UpdateAsync(properties);
+            }
 
             await command.RespondAsync("Voice channel name reset", ephemeral: true);
         }
         else
         {
             await command.RespondAsync("You must be a server member", ephemeral: true);
-        }
-    }
-
-    private void UpdateUserVoices(VoiceParamsModel voiceParams, IEnumerable<ulong> voiceIDs)
-    {
-        foreach (var voiceId in voiceIDs)
-        {
-            var voiceChannel = _client.GetChannel(voiceId) as SocketVoiceChannel;
-            voiceChannel?.ModifyAsync(x =>
-            {
-                x.Name = voiceParams.Name;
-                x.UserLimit = voiceParams.Limit;
-            });
         }
     }
 
@@ -249,23 +258,15 @@ public sealed class VoiceManagerService
             newVoiceState.VoiceChannel == _createVoiceChannel &&
             user is SocketGuildUser guildUser)
         {
-            var userModel = new UserModel(
-                Id: guildUser.Id,
-                Name: guildUser.DisplayName
-            );
-            var voiceParams = _voiceService.GetVoiceParams(userModel);
+            var properties = _voiceService.GetProperties(guildUser.Id);
+            properties.CategoryId = _createVoiceChannel.CategoryId;
+            properties.Name = properties.Name.IsSpecified ? properties.Name : $"{guildUser.DisplayName}'s channel";
 
-            var newVoiceChannel = await _guild.CreateVoiceChannelAsync(voiceParams.Name,
-                x =>
-                {
-                    x.CategoryId = _createVoiceChannel.CategoryId;
-                    x.Name = voiceParams.Name;
-                    x.UserLimit = voiceParams.Limit;
-                });
+            var newChannel = await _guild.CreateUserVoice(properties);
 
-            _voiceService.SetUserVoice(user.Id, newVoiceChannel.Id);
+            _voiceService.SetUserVoice(user.Id, newChannel.Id);
 
-            await MoveUser(guildUser, newVoiceChannel.Id);
+            await guildUser.MoveAsync(newChannel.Id);
         }
     }
 
@@ -281,10 +282,5 @@ public sealed class VoiceManagerService
 
             await oldVoiceState.VoiceChannel.DeleteAsync();
         }
-    }
-
-    private static async Task MoveUser(IGuildUser user, ulong newChannelId)
-    {
-        await user.ModifyAsync(x => { x.ChannelId = newChannelId; });
     }
 }
