@@ -1,6 +1,7 @@
-﻿using DiscordBot.Bll.Exceptions;
-using DiscordBot.Bll.Models;
+﻿using Discord;
+using DiscordBot.Bll.Exceptions;
 using DiscordBot.Bll.Services.Interfaces;
+using DiscordBot.Dal.Entities;
 using DiscordBot.Dal.Repositories.Interfaces;
 
 namespace DiscordBot.Bll.Services;
@@ -16,72 +17,50 @@ public class VoiceService : IVoiceService
         _sessionRepository = sessionRepository;
     }
 
-    public UpdateVoicesModel ClaimVoice(UserModel user, VoiceModel? voiceModel)
+    public void ClaimVoice(ulong userId, ulong? voiceId, IEnumerable<ulong> membersIds)
     {
-        if (voiceModel == null)
+        if (voiceId == null)
         {
             throw new UserNotInVoiceException();
         }
+    
+        var ownerId = _sessionRepository.GetOwner(voiceId.Value);
 
-        var ownerId = _sessionRepository.GetOwner(voiceModel.Id);
-
-        if (user.Id == ownerId)
+        if (userId == ownerId)
         {
             throw new VoiceClaimedException();
         }
-
-        if (voiceModel.UserIDs.Any(x => x == ownerId))
+    
+        if (membersIds.Any(x => x == ownerId))
         {
             throw new OwnerInVoiceException();
         }
-
-        _sessionRepository.Set(user.Id, voiceModel.Id);
-
-        return new UpdateVoicesModel(
-            Params: GetVoiceParams(user),
-            VoiceIDs: new[] { voiceModel.Id }
-        );
+    
+        _sessionRepository.Set(userId, voiceId.Value);
     }
 
-    public UpdateVoicesModel SetVoiceLimit(UserModel user, byte? limit)
+    public void SetOrUpdateProperties(ulong userId, VoiceChannelProperties properties)
     {
-        if (limit is < 1 or > 99)
-        {
-            throw new ArgumentOutOfRangeException(nameof(limit), "limit must be between 1 and 99");
-        }
+        var oldProperties = _repository.Get(userId);
 
-        var voiceEntity = _repository.Get(user.Id) with { Limit = limit };
+        var voiceEntity = new VoiceUserEntity(
+            Id: userId,
+            Name: properties.Name.GetValueOrDefault(oldProperties.Name),
+            UserLimit: properties.UserLimit.GetValueOrDefault(oldProperties.UserLimit)
+        );
+        
         _repository.SetOrUpdate(voiceEntity);
-
-        return new UpdateVoicesModel(
-            Params: GetVoiceParams(user),
-            VoiceIDs: _sessionRepository.Get(user.Id)
-        );
     }
 
-    public UpdateVoicesModel SetVoiceName(UserModel user, string? name)
+    public VoiceChannelProperties GetProperties(ulong userId)
     {
-        if (name?.Length is < 1 or > 20)
+        var properties = _repository.Get(userId);
+
+        return new VoiceChannelProperties
         {
-            throw new ArgumentOutOfRangeException(nameof(name), "Name length must be between 1 and 20");
-        }
-
-        var voiceEntity = _repository.Get(user.Id) with { Name = name };
-        _repository.SetOrUpdate(voiceEntity);
-
-        return new UpdateVoicesModel(
-            Params: GetVoiceParams(user),
-            VoiceIDs: _sessionRepository.Get(user.Id)
-        );
-    }
-
-    public VoiceParamsModel GetVoiceParams(UserModel user)
-    {
-        var voiceEntity = _repository.Get(user.Id);
-        return new VoiceParamsModel(
-            Name: voiceEntity.Name ?? $"{user.Name}'s channel",
-            Limit: voiceEntity.Limit
-        );
+            Name = properties.Name ?? Optional<string>.Unspecified,
+            UserLimit = properties.UserLimit
+        };
     }
 
     public void SetUserVoice(ulong userId, ulong voiceId)
@@ -92,5 +71,10 @@ public class VoiceService : IVoiceService
     public void RemoveUserVoice(ulong voiceId)
     {
         _sessionRepository.Remove(voiceId);
+    }
+
+    public ulong? GetUserVoice(ulong userId)
+    {
+        return _sessionRepository.Get(userId);
     }
 }
