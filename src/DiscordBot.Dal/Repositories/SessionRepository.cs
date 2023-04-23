@@ -6,7 +6,7 @@ internal class SessionRepository : ISessionRepository
 {
     private readonly Dictionary<ulong, ulong> _sessionData = new();
 
-    public IEnumerable<ulong> Get(ulong userId)
+    public ulong? Get(ulong userId)
     {
         var userVoiceChannels = new List<ulong>();
 
@@ -18,7 +18,7 @@ internal class SessionRepository : ISessionRepository
             }
         }
 
-        return userVoiceChannels;
+        return userVoiceChannels.Count > 0 ? userVoiceChannels.First() : null;
     }
 
     public ulong? GetOwner(ulong voiceId)
