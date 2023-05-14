@@ -8,4 +8,4 @@ services:
       context: .
       dockerfile: src/DiscordBot.Api/Dockerfile
     environment:
-      token: ""
+      TOKEN:

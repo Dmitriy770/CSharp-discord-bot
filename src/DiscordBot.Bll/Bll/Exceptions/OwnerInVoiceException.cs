@@ -1,4 +1,4 @@
-﻿namespace DiscordBot.Bll.Exceptions;
+﻿namespace DiscordBot.Bll.Bll.Exceptions;
 
 public class OwnerInVoiceException : Exception
 {
