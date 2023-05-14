@@ -4,7 +4,7 @@ namespace DiscordBot.Bll.Bll.Services.Interfaces;
 
 public interface IVoiceChannelSettingsService
 {
-    public void Set(ulong guildId, ulong userId, VoiceChannelSettingsModel settings);
+    public void Set(VoiceChannelSettingsModel settings);
 
     public VoiceChannelSettingsModel Get(ulong guildId, ulong userId);
 }

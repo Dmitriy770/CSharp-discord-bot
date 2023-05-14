@@ -4,11 +4,11 @@ namespace DiscordBot.Bll.Bll.Services.Interfaces;
 
 public interface IVoiceChannelService
 {
-    public void Add(ulong guildId, ulong voiceChannelOwnerId, ulong voiceChannelId);
+    public bool TryAdd(ulong guildId, ulong ownerId, ulong voiceChannelId);
 
-    public bool TryUpdate(VoiceChannelModel model, out VoiceChannelSettingsModel newSettings);
+    public VoiceChannelSettingsModel Update(VoiceChannelModel voiceChannel);
 
     public void Delete(ulong guildId, ulong voiceChannelId);
 
-    public ulong Get(ulong guildId, ulong userId);
+    public bool TryGet(ulong guildId, ulong userId, out ulong voiceChannelId);
 }

@@ -1,27 +1,64 @@
-﻿using DiscordBot.Bll.Bll.Models;
+﻿using DiscordBot.Bll.Bll.Exceptions;
+using DiscordBot.Bll.Bll.Models;
 using DiscordBot.Bll.Bll.Services.Interfaces;
+using DiscordBot.Bll.Interfaces;
 
 namespace DiscordBot.Bll.Bll.Services;
 
 public class VoiceChannelService : IVoiceChannelService
 {
-    public void Add(ulong guildId, ulong voiceChannelOwnerId, ulong voiceChannelId)
+    private readonly IVoiceChannelRepository _repository;
+    private readonly ISettingsRepository _settingsRepository;
+
+    public VoiceChannelService(IVoiceChannelRepository repository, ISettingsRepository settingsRepository)
     {
-        throw new NotImplementedException();
+        _repository = repository;
+        _settingsRepository = settingsRepository;
     }
 
-    public bool TryUpdate(VoiceChannelModel model, out VoiceChannelSettingsModel newSettings)
+    public bool TryAdd(ulong guildId, ulong ownerId, ulong voiceChannelId)
     {
-        throw new NotImplementedException();
+        if (_repository.TryGet(guildId, voiceChannelId, out _))
+        {
+            return false;
+        }
+
+        _repository.Add(guildId, ownerId, voiceChannelId);
+        return true;
+    }
+
+    public VoiceChannelSettingsModel Update(VoiceChannelModel voiceChannel)
+    {
+        if (voiceChannel.UsersIds.All(id => id != voiceChannel.OwnerId))
+        {
+            throw new UserNotInVoiceException();
+        }
+
+        if (_repository.TryGetOwner(voiceChannel.GuildId, voiceChannel.Id, out var currentOwnerId) &&
+            voiceChannel.UsersIds.Any(id => id == currentOwnerId))
+        {
+            throw new OwnerInVoiceException();
+        }
+
+        _repository.Add(voiceChannel.GuildId, voiceChannel.OwnerId, voiceChannel.Id);
+
+        var settings = _settingsRepository.GetVoiceChannelSettings(voiceChannel.GuildId, voiceChannel.Id);
+        return new VoiceChannelSettingsModel(
+            GuildId: settings.GuildId,
+            Id: settings.Id,
+            Name: settings.Name,
+            Limit: settings.Limit,
+            Bitrate: settings.Bitrate
+        );
     }
 
     public void Delete(ulong guildId, ulong voiceChannelId)
     {
-        throw new NotImplementedException();
+        _repository.Delete(guildId, voiceChannelId);
     }
 
-    public ulong Get(ulong guildId, ulong userId)
+    public bool TryGet(ulong guildId, ulong userId, out ulong voiceChannelId)
     {
-        throw new NotImplementedException();
+        return _repository.TryGet(guildId, userId, out voiceChannelId);
     }
 }

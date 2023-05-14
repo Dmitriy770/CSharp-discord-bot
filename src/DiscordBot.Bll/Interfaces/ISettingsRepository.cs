@@ -8,7 +8,7 @@ public interface ISettingsRepository
 
     public void SetSettings(GuildSettingsEntity settings);
 
-    public VoiceChannelSettingsEntity GetVoiceChannelParams(ulong guildId, ulong userId);
+    public VoiceChannelSettingsEntity GetVoiceChannelSettings(ulong guildId, ulong userId);
 
-    public void SetVoiceChannelParams(VoiceChannelSettingsEntity settings);
+    public void SetVoiceChannelSettings(VoiceChannelSettingsEntity settings);
 }
