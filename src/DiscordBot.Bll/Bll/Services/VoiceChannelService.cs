@@ -45,9 +45,9 @@ public class VoiceChannelService : IVoiceChannelService
         var settings = _settingsRepository.GetVoiceChannelSettings(voiceChannel.GuildId, voiceChannel.Id);
         return new VoiceChannelSettingsModel(
             GuildId: settings.GuildId,
-            Id: settings.Id,
+            Id: settings.UserId,
             Name: settings.Name,
-            Limit: settings.Limit,
+            Limit: settings.UserLimit,
             Bitrate: settings.Bitrate
         );
     }

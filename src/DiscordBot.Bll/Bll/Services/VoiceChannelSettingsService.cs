@@ -22,9 +22,9 @@ public class VoiceChannelSettingsService : IVoiceChannelSettingsService
         _repository.SetVoiceChannelSettings(
             new VoiceChannelSettingsEntity(
                 GuildId: settings.GuildId,
-                Id: settings.Id,
+                UserId: settings.Id,
                 Name: settings.Name,
-                Limit: settings.Limit,
+                UserLimit: settings.Limit,
                 Bitrate: settings.Bitrate
             ));
     }
@@ -35,9 +35,9 @@ public class VoiceChannelSettingsService : IVoiceChannelSettingsService
 
         return new VoiceChannelSettingsModel(
             GuildId: settings.GuildId,
-            Id: settings.Id,
+            Id: settings.UserId,
             Name: settings.Name,
-            Limit: settings.Limit,
+            Limit: settings.UserLimit,
             Bitrate: settings.Bitrate
         );
     }

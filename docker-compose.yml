@@ -9,3 +9,12 @@ services:
       dockerfile: src/DiscordBot.Api/Dockerfile
     environment:
       TOKEN:
+  voice-channel-manager-database:
+    image: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_DB: "voice-channel-manager"
+      POSTGRES_PASSWORD: "123456"
+    ports:
+      - 15432:5432

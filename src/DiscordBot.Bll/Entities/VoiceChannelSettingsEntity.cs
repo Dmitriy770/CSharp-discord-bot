@@ -2,8 +2,8 @@
 
 public record VoiceChannelSettingsEntity(
     ulong GuildId,
-    ulong Id,
+    ulong UserId,
     string? Name,
-    int? Limit,
+    int? UserLimit,
     int? Bitrate
 );
