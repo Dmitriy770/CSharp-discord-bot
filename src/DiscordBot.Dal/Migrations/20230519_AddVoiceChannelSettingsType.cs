@@ -12,10 +12,10 @@ DO $$
         IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'voice_channel_settings') THEN
             CREATE TYPE voice_channel_settings as
             (
-                  guild_id      bigint
-                , user_id       bigint
+                  guild_id      bytea
+                , user_id       bytea
                 , name          VARCHAR(15)
-                , user_limit    int
+                , users_limit   int
                 , bitrate       int
             );
         END IF;

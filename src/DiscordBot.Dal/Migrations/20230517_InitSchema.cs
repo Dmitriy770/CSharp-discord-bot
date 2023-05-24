@@ -7,24 +7,24 @@ public class InitSchema : Migration {
     public override void Up()
     {
         Create.Table("guilds_settings")
-            .WithColumn("id").AsInt64().PrimaryKey("guilds_pk")
-            .WithColumn("create_voice_channel_id").AsInt64().Nullable();
+            .WithColumn("id").AsBinary(8).PrimaryKey("guilds_pk")
+            .WithColumn("create_voice_channel_id").AsBinary(8).Nullable();
 
-        Create.Table("channels_settings")
-            .WithColumn("guild_id").AsInt64()
-            .WithColumn("user_id").AsInt64()
-            .WithColumn("name").AsFixedLengthString(15).Nullable()
-            .WithColumn("user_limit").AsInt32().Nullable()
+        Create.Table("voice_channels_settings")
+            .WithColumn("guild_id").AsBinary(8)
+            .WithColumn("user_id").AsBinary(8)
+            .WithColumn("name").AsString(15).Nullable()
+            .WithColumn("users_limit").AsInt32().Nullable()
             .WithColumn("bitrate").AsInt32().Nullable();
 
-        Create.PrimaryKey("channels_settings_pk")
-            .OnTable("channels_settings")
+        Create.PrimaryKey("voice_channels_settings_pk")
+            .OnTable("voice_channels_settings")
             .Columns(new string[]{"guild_id", "user_id"});
     }
 
     public override void Down()
     {
-        Delete.Table("guilds");
-        Delete.Table("channels_settings");
+        Delete.Table("guilds_settings");
+        Delete.Table("voice_channels_settings");
     }
 }

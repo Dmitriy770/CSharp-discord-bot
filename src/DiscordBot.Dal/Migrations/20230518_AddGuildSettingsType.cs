@@ -12,8 +12,8 @@ DO $$
         IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'guilds_settings') THEN
             CREATE TYPE guild_settings as
             (
-                  id                        bigint
-                , create_voice_channel_id   bigint
+                  id                        bytea
+                , create_voice_channel_id   bytea
             );
         END IF;
     END
@@ -27,7 +27,7 @@ $$;";
         const string sql = @"
 DO $$
     BEGIN
-        DROP TYPE IF EXISTS guilds_settings;
+        DROP TYPE IF EXISTS guild_settings;
     END
 $$;";
         
