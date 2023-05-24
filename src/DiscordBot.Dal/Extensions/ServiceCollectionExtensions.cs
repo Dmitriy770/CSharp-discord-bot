@@ -13,6 +13,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddSingleton<IVoiceChannelRepository, VoiceChannelRepository>();
         services.AddSingleton<ISettingsRepository, SettingRepository>();
+        services.AddSingleton<IVoiceChannelSettingsRepository, VoiceChannelSettingsRepository>();
         
         return services;
     }
@@ -22,7 +23,7 @@ public static class ServiceCollectionExtensions
         IConfiguration config)
     {
         services.Configure<DalOptions>(config.GetSection(nameof(DalOptions)));
-        
+
         Postgres.MapCompositeTypes();
         
         Postgres.AddMigrations(services);

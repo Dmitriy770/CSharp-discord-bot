@@ -14,11 +14,13 @@ public class Postgres
 
     public static void MapCompositeTypes()
     {
-        var mapper = NpgsqlConnection.GlobalTypeMapper;
+        var mapper = new NpgsqlDataSourceBuilder();
+
         Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
 
         mapper.MapComposite<GuildSettingsEntity>("guilds_settings", Translator);
         mapper.MapComposite<VoiceChannelSettingsEntity>("voice_channel_settings", Translator);
+
     }
 
     public static void AddMigrations(IServiceCollection services)
