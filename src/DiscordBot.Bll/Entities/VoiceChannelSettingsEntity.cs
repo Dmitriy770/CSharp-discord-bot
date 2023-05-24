@@ -1,9 +1,12 @@
-﻿namespace DiscordBot.Bll.Entities;
+﻿using System.Collections;
 
-public record VoiceChannelSettingsEntity(
-    ulong GuildId,
-    ulong UserId,
-    string? Name,
-    int? UserLimit,
-    int? Bitrate
-);
+namespace DiscordBot.Bll.Entities;
+
+public record VoiceChannelSettingsEntity
+{
+    public byte[] GuildId { get; init; } = Array.Empty<byte>();
+    public byte[] UserId { get; init; } = Array.Empty<byte>();
+    public string? Name { get; init; }
+    public int? UsersLimit { get; init; }
+    public int? Bitrate { get; init; }
+};
