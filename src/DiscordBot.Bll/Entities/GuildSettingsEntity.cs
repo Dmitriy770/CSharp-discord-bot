@@ -1,6 +1,9 @@
-﻿namespace DiscordBot.Bll.Entities;
+﻿using System.Collections;
 
-public record GuildSettingsEntity(
-    ulong Id,
-    ulong? CreateVoiceChannelId
-);
+namespace DiscordBot.Bll.Entities;
+
+public record GuildSettingsEntity
+{
+    public byte[] Id { get; init; } = Array.Empty<byte>();
+    public byte[]? CreateVoiceChannelId { get; init; }
+}

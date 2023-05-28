@@ -22,7 +22,7 @@ select guild_id
      , users_limit
      , bitrate
 from voice_channels_settings
-where guild_id=@GuildId and user_id=@UserId
+where guild_id=@GuildId and user_id=@UserId;
 ";
 
         var sqlQueryParams = new
