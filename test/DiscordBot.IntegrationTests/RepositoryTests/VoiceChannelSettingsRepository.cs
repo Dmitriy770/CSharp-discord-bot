@@ -11,12 +11,10 @@ namespace DiscordBot.IntegrationTests.RepositoryTests;
 [Collection(nameof(TestFixture))]
 public class VoiceChannelSettingsRepository
 {
-    private readonly ITestOutputHelper _testOutputHelper;
     private readonly IVoiceChannelSettingsRepository _voiceChannelSettingsRepository;
 
-    public VoiceChannelSettingsRepository(TestFixture fixture, ITestOutputHelper testOutputHelper)
+    public VoiceChannelSettingsRepository(TestFixture fixture)
     {
-        _testOutputHelper = testOutputHelper;
         _voiceChannelSettingsRepository = fixture.VoiceChannelSettingsRepository;
     }
 
@@ -159,6 +157,31 @@ public class VoiceChannelSettingsRepository
         await _voiceChannelSettingsRepository.SetName(bGuildId, bUserId, name, CancellationToken.None);
         await _voiceChannelSettingsRepository.SetUsersLimit(bGuildId, bUserId, usersLimit, CancellationToken.None);
         await _voiceChannelSettingsRepository.SetBitrate(bGuildId, bUserId, bitrate, CancellationToken.None);
+
+        //Act
+        await _voiceChannelSettingsRepository.Delete(bGuildId, bUserId, CancellationToken.None);
+
+        //Asserts
+        var settings = await _voiceChannelSettingsRepository.Get(bGuildId, bUserId, CancellationToken.None);
+        
+        BitConverter.ToUInt64(settings.GuildId).Should().Be(guildId);
+        BitConverter.ToUInt64(settings.UserId).Should().Be(userId);
+        settings.Name.Should().Be(null);
+        settings.UsersLimit.Should().Be(null);
+        settings.Bitrate.Should().Be(null);
+    }
+    
+    [Fact]
+    public async Task Delete_DeleteMissingLine_Success()
+    {
+        // Arrange
+        var faker = new Faker();
+
+        var guildId = faker.Random.ULong();
+        var bGuildId = BitConverter.GetBytes(guildId);
+        
+        var userId = faker.Random.ULong();
+        var bUserId = BitConverter.GetBytes(userId);
 
         //Act
         await _voiceChannelSettingsRepository.Delete(bGuildId, bUserId, CancellationToken.None);

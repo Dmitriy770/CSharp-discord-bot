@@ -9,7 +9,8 @@ namespace DiscordBot.IntegrationTests.Fixtures;
 
 public class TestFixture
 {
-    public IVoiceChannelSettingsRepository VoiceChannelSettingsRepository{ get; }
+    public IVoiceChannelSettingsRepository VoiceChannelSettingsRepository { get; }
+    public IGuildSettingsRepository GuildSettingsRepository { get; }
 
     public TestFixture()
     {
@@ -26,12 +27,13 @@ public class TestFixture
                     .AddDalRepositories();
             })
             .Build();
-        
+
         ClearDatabase(host);
         host.MigrateUp();
 
         var serviceProvider = host.Services;
         VoiceChannelSettingsRepository = serviceProvider.GetRequiredService<IVoiceChannelSettingsRepository>();
+        GuildSettingsRepository = serviceProvider.GetRequiredService<IGuildSettingsRepository>();
     }
 
     private static void ClearDatabase(IHost host)
@@ -40,5 +42,4 @@ public class TestFixture
         var runner = scope.ServiceProvider.GetRequiredService<IMigrationRunner>();
         runner.MigrateDown(20230516);
     }
-
 }
