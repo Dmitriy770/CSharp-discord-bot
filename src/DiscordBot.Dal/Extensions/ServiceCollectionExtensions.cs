@@ -12,7 +12,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddDalRepositories(this IServiceCollection services)
     {
         services.AddSingleton<IVoiceChannelRepository, VoiceChannelRepository>();
-        services.AddSingleton<ISettingsRepository, SettingRepository>();
+        services.AddSingleton<IGuildSettingsRepository, GuildSettingRepository>();
         services.AddSingleton<IVoiceChannelSettingsRepository, VoiceChannelSettingsRepository>();
         
         return services;

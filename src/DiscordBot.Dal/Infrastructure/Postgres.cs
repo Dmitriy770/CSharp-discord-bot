@@ -29,8 +29,18 @@ public class Postgres
             .ConfigureRunner(rb => rb.AddPostgres()
                 .WithGlobalConnectionString(s =>
                 {
-                    var cfg = s.GetRequiredService<IOptions<DalOptions>>();
-                    return cfg.Value.ConnectionString;
+                    var dalSettings = s.GetRequiredService<IOptions<DalOptions>>().Value;
+                    var connectionStringBuilder = new NpgsqlConnectionStringBuilder
+                    {
+                        Host = dalSettings.Host,
+                        Port = dalSettings.Port,
+                        Username = dalSettings.User,
+                        Password = dalSettings.Password,
+                        Database = dalSettings.Database,
+                        Pooling = dalSettings.Pooling
+                    };
+
+                    return connectionStringBuilder.ConnectionString;
                 })
                 .ScanIn(typeof(Postgres).Assembly).For.Migrations()
             )

@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using Dapper;
+﻿using Dapper;
 using DiscordBot.Bll.Entities;
 using DiscordBot.Bll.Interfaces;
 using DiscordBot.Dal.Settings;

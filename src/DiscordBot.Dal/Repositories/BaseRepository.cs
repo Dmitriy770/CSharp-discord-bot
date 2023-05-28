@@ -2,7 +2,6 @@
 using DiscordBot.Dal.Repositories.Interfaces;
 using DiscordBot.Dal.Settings;
 using Npgsql;
-using NpgsqlTypes;
 
 namespace DiscordBot.Dal.Repositories;
 
@@ -17,7 +16,17 @@ public abstract class BaseRepository : IDbRepository
 
     protected async Task<NpgsqlConnection> GetAndOpenConnection()
     {
-        var connection = new NpgsqlConnection(_dalSettings.ConnectionString);
+        var connectionStringBuilder = new NpgsqlConnectionStringBuilder
+        {
+            Host = _dalSettings.Host,
+            Port = _dalSettings.Port,
+            Username = _dalSettings.User,
+            Password = _dalSettings.Password,
+            Database = _dalSettings.Database,
+            Pooling = _dalSettings.Pooling
+        };
+        
+        var connection = new NpgsqlConnection(connectionStringBuilder.ConnectionString);
         await connection.OpenAsync();
         await connection.ReloadTypesAsync();
 
