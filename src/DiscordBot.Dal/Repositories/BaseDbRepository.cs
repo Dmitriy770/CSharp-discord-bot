@@ -5,25 +5,25 @@ using Npgsql;
 
 namespace DiscordBot.Dal.Repositories;
 
-public abstract class BaseRepository : IDbRepository
+public abstract class BaseDbRepository : IDbRepository
 {
-    private readonly DalOptions _dalSettings;
+    private readonly DatabaseOptions _databaseSettings;
 
-    protected BaseRepository(DalOptions dalSettings)
+    protected BaseDbRepository(DatabaseOptions databaseSettings)
     {
-        _dalSettings = dalSettings;
+        _databaseSettings = databaseSettings;
     }
 
     protected async Task<NpgsqlConnection> GetAndOpenConnection()
     {
         var connectionStringBuilder = new NpgsqlConnectionStringBuilder
         {
-            Host = _dalSettings.Host,
-            Port = _dalSettings.Port,
-            Username = _dalSettings.User,
-            Password = _dalSettings.Password,
-            Database = _dalSettings.Database,
-            Pooling = _dalSettings.Pooling
+            Host = _databaseSettings.Host,
+            Port = _databaseSettings.Port,
+            Username = _databaseSettings.User,
+            Password = _databaseSettings.Password,
+            Database = _databaseSettings.Database,
+            Pooling = _databaseSettings.Pooling
         };
         
         var connection = new NpgsqlConnection(connectionStringBuilder.ConnectionString);

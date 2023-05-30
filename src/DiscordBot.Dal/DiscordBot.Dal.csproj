@@ -16,6 +16,7 @@
         <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="7.0.0" />
         <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="7.0.0" />
         <PackageReference Include="Npgsql" Version="7.0.4" />
+        <PackageReference Include="NRedisStack" Version="0.6.1" />
     </ItemGroup>
 
     <ItemGroup>

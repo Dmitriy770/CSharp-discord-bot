@@ -6,9 +6,9 @@ using Microsoft.Extensions.Options;
 
 namespace DiscordBot.Dal.Repositories;
 
-public class GuildSettingRepository : BaseRepository, IGuildSettingsRepository
+public class GuildSettingRepository : BaseDbRepository, IGuildSettingsRepository
 {
-    public GuildSettingRepository(IOptions<DalOptions> dalSettings) : base(dalSettings.Value)
+    public GuildSettingRepository(IOptions<DatabaseOptions> dalSettings) : base(dalSettings.Value)
     {
     }
 

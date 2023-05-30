@@ -6,9 +6,9 @@ using Microsoft.Extensions.Options;
 
 namespace DiscordBot.Dal.Repositories;
 
-public class VoiceChannelSettingsRepository : BaseRepository, IVoiceChannelSettingsRepository
+public class VoiceChannelSettingsRepository : BaseDbRepository, IVoiceChannelSettingsRepository
 {
-    public VoiceChannelSettingsRepository(IOptions<DalOptions> dalSettings) : base(dalSettings.Value)
+    public VoiceChannelSettingsRepository(IOptions<DatabaseOptions> dalSettings) : base(dalSettings.Value)
     {
     }
 

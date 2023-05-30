@@ -11,7 +11,7 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddDalRepositories(this IServiceCollection services)
     {
-        services.AddSingleton<IVoiceChannelRepository, VoiceChannelRepository>();
+        services.AddSingleton<IVoiceChannelCacheRepository, VoiceChannelCacheRepository>();
         services.AddSingleton<IGuildSettingsRepository, GuildSettingRepository>();
         services.AddSingleton<IVoiceChannelSettingsRepository, VoiceChannelSettingsRepository>();
         
@@ -22,7 +22,8 @@ public static class ServiceCollectionExtensions
         this IServiceCollection services,
         IConfiguration config)
     {
-        services.Configure<DalOptions>(config.GetSection(nameof(DalOptions)));
+        services.Configure<DatabaseOptions>(config.GetSection(nameof(DatabaseOptions)));
+        services.Configure<CacheOptions>(config.GetSection(nameof(CacheOptions)));
 
         Postgres.MapCompositeTypes();
         

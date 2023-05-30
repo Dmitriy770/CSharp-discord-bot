@@ -29,15 +29,16 @@ public class Postgres
             .ConfigureRunner(rb => rb.AddPostgres()
                 .WithGlobalConnectionString(s =>
                 {
-                    var dalSettings = s.GetRequiredService<IOptions<DalOptions>>().Value;
+                    var databaseSettings = s.GetRequiredService<IOptions<DatabaseOptions>>().Value;
+
                     var connectionStringBuilder = new NpgsqlConnectionStringBuilder
                     {
-                        Host = dalSettings.Host,
-                        Port = dalSettings.Port,
-                        Username = dalSettings.User,
-                        Password = dalSettings.Password,
-                        Database = dalSettings.Database,
-                        Pooling = dalSettings.Pooling
+                        Host = databaseSettings.Host,
+                        Port = databaseSettings.Port,
+                        Username = databaseSettings.User,
+                        Password = databaseSettings.Password,
+                        Database = databaseSettings.Database,
+                        Pooling = databaseSettings.Pooling
                     };
 
                     return connectionStringBuilder.ConnectionString;
