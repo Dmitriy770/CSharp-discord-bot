@@ -11,12 +11,13 @@ public class TestFixture
 {
     public IVoiceChannelSettingsRepository VoiceChannelSettingsRepository { get; }
     public IGuildSettingsRepository GuildSettingsRepository { get; }
+    public IVoiceChannelCacheRepository VoiceChannelCacheRepository { get; }
 
     public TestFixture()
     {
         var config = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json")
+            .AddJsonFile("appsettings.Development.json")
             .Build();
 
         var host = Host.CreateDefaultBuilder()
@@ -34,6 +35,7 @@ public class TestFixture
         var serviceProvider = host.Services;
         VoiceChannelSettingsRepository = serviceProvider.GetRequiredService<IVoiceChannelSettingsRepository>();
         GuildSettingsRepository = serviceProvider.GetRequiredService<IGuildSettingsRepository>();
+        VoiceChannelCacheRepository = serviceProvider.GetRequiredService<IVoiceChannelCacheRepository>();
     }
 
     private static void ClearDatabase(IHost host)

@@ -28,9 +28,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="..\..\src\DiscordBot.Api\appsettings.json">
-            <Link>appsettings.json</Link>
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        <Content Include="..\..\src\DiscordBot.Api\appsettings.Development.json">
+          <Link>appsettings.Development.json</Link>
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
     </ItemGroup>
 
