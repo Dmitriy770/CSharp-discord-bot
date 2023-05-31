@@ -4,6 +4,6 @@ public record VoiceChannelSettingsModel(
     ulong GuildId,
     ulong Id,
     string? Name,
-    int? Limit,
+    int? UsersLimit,
     int? Bitrate
 );

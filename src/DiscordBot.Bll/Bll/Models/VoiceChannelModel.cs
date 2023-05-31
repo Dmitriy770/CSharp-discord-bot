@@ -2,7 +2,6 @@
 
 public record VoiceChannelModel(
     ulong GuildId,
-    ulong Id,
-    IEnumerable<ulong> UsersIds,
-    ulong OwnerId
+    ulong? Id,
+    ulong[] UsersIds
 );
