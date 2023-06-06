@@ -11,7 +11,8 @@ public static class ServiceCollectionExtensions
         var config = new DiscordSocketConfig()
         {
             LogLevel = GetDiscordLogLevel(configuration),
-            MessageCacheSize = 1000
+            MessageCacheSize = 1000,
+            GatewayIntents = GatewayIntents.GuildVoiceStates | GatewayIntents.Guilds
         };
 
         services
