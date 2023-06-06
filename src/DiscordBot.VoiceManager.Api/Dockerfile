@@ -3,18 +3,18 @@ WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["src/DiscordBot.Api/DiscordBot.Api.csproj", "src/DiscordBot.Api/"]
-COPY ["src/DiscordBot.Dal/DiscordBot.Dal.csproj", "src/DiscordBot.Dal/"]
-COPY ["src/DiscordBot.Bll/DiscordBot.Bll.csproj", "src/DiscordBot.Bll/"]
-RUN dotnet restore "src/DiscordBot.Api/DiscordBot.Api.csproj"
+COPY ["src/DiscordBot.VoiceManager.Api/DiscordBot.VoiceManager.Api.csproj", "src/DiscordBot.VoiceManager.Api/"]
+COPY ["src/DiscordBot.VoiceManager.Infrastructure/DiscordBot.VoiceManager.Infrastructure.csproj", "src/DiscordBot.VoiceManager.Infrastructure/"]
+COPY ["src/DiscordBot.VoiceManager.Domain/DiscordBot.VoiceManager.Domain.csproj", "src/DiscordBot.VoiceManager.Domain/"]
+RUN dotnet restore "src/DiscordBot.VoiceManager.Api/DiscordBot.VoiceManager.Api.csproj"
 COPY . .
-WORKDIR "/src/src/DiscordBot.Api"
-RUN dotnet build "DiscordBot.Api.csproj" -c Release -o /app/build
+WORKDIR "/src/src/DiscordBot.VoiceManager.Api"
+RUN dotnet build "DiscordBot.VoiceManager.Api.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "DiscordBot.Api.csproj" -c Release -o /app/publish
+RUN dotnet publish "DiscordBot.VoiceManager.Api.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "DiscordBot.Api.dll"]
+ENTRYPOINT ["dotnet", "DiscordBot.VoiceManager.Api.dll"]
