@@ -32,8 +32,8 @@ public class LogService
             LogSeverity.Critical => LogLevel.Critical,
             _ => LogLevel.None
         };
-
-        _logger.Log(logLevel, message.Exception, message.Message);
+        
+        _logger.Log(logLevel, "{Message}", message.Message);
 
         return Task.CompletedTask;
     }
