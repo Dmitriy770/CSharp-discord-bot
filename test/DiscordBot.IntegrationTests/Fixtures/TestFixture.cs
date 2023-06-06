@@ -1,5 +1,5 @@
-﻿using DiscordBot.Bll.Interfaces;
-using DiscordBot.Dal.Extensions;
+﻿using DiscordBot.VoiceManager.Domain.Interfaces;
+using DiscordBot.VoiceManager.Infrastructure.Extensions;
 using FluentMigrator.Runner;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

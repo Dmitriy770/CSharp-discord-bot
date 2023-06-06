@@ -28,15 +28,15 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="..\..\src\DiscordBot.Api\appsettings.Development.json">
-          <Link>appsettings.Development.json</Link>
-          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
+      <ProjectReference Include="..\..\src\DiscordBot.VoiceManager.Domain\DiscordBot.VoiceManager.Domain.csproj" />
+      <ProjectReference Include="..\..\src\DiscordBot.VoiceManager.Infrastructure\DiscordBot.VoiceManager.Infrastructure.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\DiscordBot.Bll\DiscordBot.Bll.csproj" />
-      <ProjectReference Include="..\..\src\DiscordBot.Dal\DiscordBot.Dal.csproj" />
+      <Content Include="..\..\src\DiscordBot.VoiceManager.Api\appsettings.Development.json">
+        <Link>appsettings.Development.json</Link>
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
     
 </Project>

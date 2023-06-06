@@ -1,7 +1,7 @@
 ﻿using Bogus;
-using DiscordBot.Bll.Entities;
-using DiscordBot.Bll.Interfaces;
 using DiscordBot.IntegrationTests.Fixtures;
+using DiscordBot.VoiceManager.Domain.Entities;
+using DiscordBot.VoiceManager.Domain.Interfaces;
 using FluentAssertions;
 using Xunit;
 

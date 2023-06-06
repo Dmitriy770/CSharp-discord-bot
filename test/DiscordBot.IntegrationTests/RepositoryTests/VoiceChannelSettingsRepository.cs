@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using Bogus;
-using DiscordBot.Bll.Interfaces;
+﻿using Bogus;
 using DiscordBot.IntegrationTests.Fixtures;
+using DiscordBot.VoiceManager.Domain.Interfaces;
 using FluentAssertions;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace DiscordBot.IntegrationTests.RepositoryTests;
 

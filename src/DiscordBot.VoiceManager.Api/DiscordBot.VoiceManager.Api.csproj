@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UserSecretsId>dotnet-DiscordBot.Api-98311194-A2BD-4A06-ACDF-7D9D06725D78</UserSecretsId>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <RootNamespace>DiscordBot.VoiceManager.Api</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Discord.Net" Version="3.10.0" />
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\DiscordBot.VoiceManager.Domain\DiscordBot.VoiceManager.Domain.csproj" />
+      <ProjectReference Include="..\DiscordBot.VoiceManager.Infrastructure\DiscordBot.VoiceManager.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
+    </ItemGroup>
+</Project>
