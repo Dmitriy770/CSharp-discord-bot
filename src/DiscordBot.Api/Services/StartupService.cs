@@ -21,7 +21,7 @@ public sealed class StartupService
 
     public async Task RunAsync()
     {
-        await _client.LoginAsync(TokenType.Bot, _configuration["Token"]);
+        await _client.LoginAsync(TokenType.Bot, _configuration["Discord:Token"]);
         await _client.StartAsync();
 
         _client.Ready += async () =>

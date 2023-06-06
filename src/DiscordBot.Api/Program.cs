@@ -17,7 +17,7 @@ class Program
         host.Services.GetService<StartupService>()?.RunAsync();
         host.Services.GetService<LogService>();
         host.Services.GetService<AdminsCommandHandlerService>()?.RunAsync();
-        host.Services.GetService<CommandHandlerService>()?.RunAsync();
+        host.Services.GetService<VoiceManagerCommandHandlerService>()?.RunAsync();
         host.Services.GetService<VoiceChannelService>()?.RunAsync();
 
         host.MigrateUp();

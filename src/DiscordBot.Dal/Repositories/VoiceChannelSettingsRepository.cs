@@ -8,7 +8,7 @@ namespace DiscordBot.Dal.Repositories;
 
 public class VoiceChannelSettingsRepository : BaseDbRepository, IVoiceChannelSettingsRepository
 {
-    public VoiceChannelSettingsRepository(IOptions<DatabaseOptions> dalSettings) : base(dalSettings.Value)
+    public VoiceChannelSettingsRepository(IOptions<DbOptions> dalSettings) : base(dalSettings.Value)
     {
     }
 

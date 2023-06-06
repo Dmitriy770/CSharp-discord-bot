@@ -8,7 +8,7 @@ namespace DiscordBot.Dal.Repositories;
 
 public class GuildSettingRepository : BaseDbRepository, IGuildSettingsRepository
 {
-    public GuildSettingRepository(IOptions<DatabaseOptions> dalSettings) : base(dalSettings.Value)
+    public GuildSettingRepository(IOptions<DbOptions> dalSettings) : base(dalSettings.Value)
     {
     }
 

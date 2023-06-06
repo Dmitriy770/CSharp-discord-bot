@@ -1,6 +1,6 @@
 ﻿namespace DiscordBot.Dal.Settings;
 
-public record DatabaseOptions
+public record DbOptions
 {
     public string Host { get; init; } = string.Empty;
     public int Port { get; init; }

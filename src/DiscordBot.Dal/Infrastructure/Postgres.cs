@@ -29,7 +29,7 @@ public class Postgres
             .ConfigureRunner(rb => rb.AddPostgres()
                 .WithGlobalConnectionString(s =>
                 {
-                    var databaseSettings = s.GetRequiredService<IOptions<DatabaseOptions>>().Value;
+                    var databaseSettings = s.GetRequiredService<IOptions<DbOptions>>().Value;
 
                     var connectionStringBuilder = new NpgsqlConnectionStringBuilder
                     {

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-
-namespace DiscordBot.Bll.Entities;
+﻿namespace DiscordBot.Bll.Entities;
 
 public record GuildSettingsEntity
 {

@@ -7,23 +7,23 @@ namespace DiscordBot.Dal.Repositories;
 
 public abstract class BaseDbRepository : IDbRepository
 {
-    private readonly DatabaseOptions _databaseSettings;
+    private readonly DbOptions _dbSettings;
 
-    protected BaseDbRepository(DatabaseOptions databaseSettings)
+    protected BaseDbRepository(DbOptions dbSettings)
     {
-        _databaseSettings = databaseSettings;
+        _dbSettings = dbSettings;
     }
 
     protected async Task<NpgsqlConnection> GetAndOpenConnection()
     {
         var connectionStringBuilder = new NpgsqlConnectionStringBuilder
         {
-            Host = _databaseSettings.Host,
-            Port = _databaseSettings.Port,
-            Username = _databaseSettings.User,
-            Password = _databaseSettings.Password,
-            Database = _databaseSettings.Database,
-            Pooling = _databaseSettings.Pooling
+            Host = _dbSettings.Host,
+            Port = _dbSettings.Port,
+            Username = _dbSettings.User,
+            Password = _dbSettings.Password,
+            Database = _dbSettings.Database,
+            Pooling = _dbSettings.Pooling
         };
         
         var connection = new NpgsqlConnection(connectionStringBuilder.ConnectionString);

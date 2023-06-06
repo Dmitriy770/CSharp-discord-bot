@@ -22,7 +22,7 @@ public static class ServiceCollectionExtensions
         this IServiceCollection services,
         IConfiguration config)
     {
-        services.Configure<DatabaseOptions>(config.GetSection(nameof(DatabaseOptions)));
+        services.Configure<DbOptions>(config.GetSection(nameof(DbOptions)));
         services.Configure<CacheOptions>(config.GetSection(nameof(CacheOptions)));
 
         Postgres.MapCompositeTypes();

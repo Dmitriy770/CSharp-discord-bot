@@ -1,5 +1,4 @@
-﻿using System.Data.SqlServerCe;
-using Discord;
+﻿using Discord;
 
 namespace DiscordBot.Api.Extensions;
 

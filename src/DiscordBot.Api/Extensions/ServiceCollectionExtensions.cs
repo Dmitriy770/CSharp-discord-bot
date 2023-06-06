@@ -1,6 +1,5 @@
 ﻿using Discord.WebSocket;
 using Discord;
-using DiscordBot.Api.Options;
 using DiscordBot.Api.Services;
 
 namespace DiscordBot.Api.Extensions;
@@ -16,12 +15,11 @@ public static class ServiceCollectionExtensions
         };
 
         services
-            .Configure<GuildOptions>(configuration.GetSection("Guild"))
             .AddSingleton(config)
             .AddSingleton<DiscordSocketClient>()
             .AddSingleton<StartupService>()
             .AddSingleton<LogService>()
-            .AddSingleton<CommandHandlerService>()
+            .AddSingleton<VoiceManagerCommandHandlerService>()
             .AddSingleton<AdminsCommandHandlerService>()
             .AddSingleton<VoiceChannelService>()
             .AddSingleton<CreateVoiceChannelService>();

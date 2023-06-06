@@ -9,14 +9,14 @@ using MediatR;
 
 namespace DiscordBot.Api.Services;
 
-public class CommandHandlerService
+public class VoiceManagerCommandHandlerService
 {
     private readonly DiscordSocketClient _client;
     private readonly IServiceScopeFactory _serviceScope;
     private readonly CreateVoiceChannelService _voiceChannel;
     private readonly CancellationToken _cancellationToken;
 
-    public CommandHandlerService(
+    public VoiceManagerCommandHandlerService(
         DiscordSocketClient client, IServiceScopeFactory serviceScope, CreateVoiceChannelService voiceChannel)
     {
         _client = client;
