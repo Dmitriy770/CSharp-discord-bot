@@ -1,7 +1,7 @@
 ﻿version: "3.8"
 
 services:
-  discord-bot:
+  application:
     restart: unless-stopped
     container_name: discord-bot
     build:
@@ -9,12 +9,18 @@ services:
       dockerfile: src/DiscordBot.Api/Dockerfile
     environment:
       TOKEN:
-  voice-channel-manager-database:
-    image: postgres
+  db:
+    image: postgres:alpine
     restart: unless-stopped
     environment:
-      POSTGRES_USER: "postgres"
-      POSTGRES_DB: "voice-channel-manager"
-      POSTGRES_PASSWORD: "123456"
+      POSTGRES_USER: postgres
+      POSTGRES_DB: voice-channel-manager
+      POSTGRES_PASSWORD: 123456
     ports:
       - 15432:5432
+  cache:
+    image: redis:alpine
+    restart: unless-stopped
+    command: redis-server --save "" --appendonly no --requirepass password
+    ports:
+      - '6369:6379'

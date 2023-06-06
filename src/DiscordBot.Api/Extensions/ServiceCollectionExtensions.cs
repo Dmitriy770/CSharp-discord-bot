@@ -21,7 +21,10 @@ public static class ServiceCollectionExtensions
             .AddSingleton<DiscordSocketClient>()
             .AddSingleton<StartupService>()
             .AddSingleton<LogService>()
-            .AddSingleton<VoiceManagerService>();
+            .AddSingleton<CommandHandlerService>()
+            .AddSingleton<AdminsCommandHandlerService>()
+            .AddSingleton<VoiceChannelService>()
+            .AddSingleton<CreateVoiceChannelService>();
 
         return services;
     }

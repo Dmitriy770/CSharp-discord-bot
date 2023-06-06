@@ -23,7 +23,7 @@ public class DeleteVoiceChannelOwnerCommandHandler
     {
         var voiceChannelCache = await _voiceChannelCacheRepository.Get(
             request.GuildId,
-            request.UserId);
+            request.VoiceChannelId);
 
         if (voiceChannelCache.OwnerId == request.UserId)
         {

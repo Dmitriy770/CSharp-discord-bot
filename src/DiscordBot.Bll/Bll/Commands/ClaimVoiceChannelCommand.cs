@@ -38,7 +38,6 @@ public class ClaimVoiceChannelCommandHandler
 
         var voiceChannelCache = await _voiceChannelCacheRepository.Get(guildId, voiceChannel.Id.Value);
 
-
         if (voiceChannelCache.OwnerId == newOwnerId)
         {
             throw new VoiceClaimedException();

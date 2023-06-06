@@ -11,9 +11,9 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddDalRepositories(this IServiceCollection services)
     {
-        services.AddSingleton<IVoiceChannelCacheRepository, VoiceChannelCacheRepository>();
-        services.AddSingleton<IGuildSettingsRepository, GuildSettingRepository>();
-        services.AddSingleton<IVoiceChannelSettingsRepository, VoiceChannelSettingsRepository>();
+        services.AddTransient<IVoiceChannelCacheRepository, VoiceChannelCacheRepository>();
+        services.AddTransient<IGuildSettingsRepository, GuildSettingRepository>();
+        services.AddTransient<IVoiceChannelSettingsRepository, VoiceChannelSettingsRepository>();
         
         return services;
     }

@@ -17,8 +17,9 @@ public sealed class Startup
     {
         services
             .AddApi(_configuration)
-            .AddDalRepositories()
-            .AddBll();
+            .AddBll()
+            .AddDalInfrastructure(_configuration)
+            .AddDalRepositories();
 
         return services;
     }

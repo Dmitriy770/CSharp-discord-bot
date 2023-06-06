@@ -26,7 +26,7 @@ public class GetGuildSettingsQueryHandle
 
         return new GuildSettingsModel(
             BitConverter.ToUInt64(settings.Id),
-            BitConverter.ToUInt64(settings.CreateVoiceChannelId)
+            settings.CreateVoiceChannelId is null ? null : BitConverter.ToUInt64(settings.CreateVoiceChannelId)
         );
     }
 }

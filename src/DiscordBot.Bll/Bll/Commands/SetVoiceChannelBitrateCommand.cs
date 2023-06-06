@@ -16,6 +16,7 @@ public class SetVoiceChannelBitrateCommandHandler
 {
     private readonly IVoiceChannelCacheRepository _voiceChannelCacheRepository;
     private readonly IVoiceChannelSettingsRepository _voiceChannelSettingsRepository;
+    private const int KILO = 1000;
 
     public SetVoiceChannelBitrateCommandHandler(
         IVoiceChannelCacheRepository voiceChannelCacheRepository,
@@ -38,10 +39,10 @@ public class SetVoiceChannelBitrateCommandHandler
         var settings = await _voiceChannelSettingsRepository.SetBitrate(
             BitConverter.GetBytes(guildId),
             BitConverter.GetBytes(userId),
-            bitrate,
+            bitrate * KILO,
             token);
-        
-        
+
+
         if (voiceChannelId is not null)
         {
             var voiceChannelCache = await _voiceChannelCacheRepository.Get(guildId, voiceChannelId.Value);

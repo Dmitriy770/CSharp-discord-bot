@@ -1,4 +1,5 @@
 using DiscordBot.Api.Services;
+using DiscordBot.Dal.Extensions;
 
 namespace DiscordBot.Api;
 
@@ -15,7 +16,11 @@ class Program
 
         host.Services.GetService<StartupService>()?.RunAsync();
         host.Services.GetService<LogService>();
-        host.Services.GetService<VoiceManagerService>();
+        host.Services.GetService<AdminsCommandHandlerService>()?.RunAsync();
+        host.Services.GetService<CommandHandlerService>()?.RunAsync();
+        host.Services.GetService<VoiceChannelService>()?.RunAsync();
+
+        host.MigrateUp();
 
         return host.RunAsync();
     }
