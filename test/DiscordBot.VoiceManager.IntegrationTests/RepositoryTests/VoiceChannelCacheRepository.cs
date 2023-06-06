@@ -1,11 +1,11 @@
 ﻿using Bogus;
-using DiscordBot.IntegrationTests.Fixtures;
 using DiscordBot.VoiceManager.Domain.Entities;
 using DiscordBot.VoiceManager.Domain.Interfaces;
+using DiscordBot.VoiceManager.IntegrationTests.Fixtures;
 using FluentAssertions;
 using Xunit;
 
-namespace DiscordBot.IntegrationTests.RepositoryTests;
+namespace DiscordBot.VoiceManager.IntegrationTests.RepositoryTests;
 
 [Collection(nameof(TestFixture))]
 public class VoiceChannelCacheRepository

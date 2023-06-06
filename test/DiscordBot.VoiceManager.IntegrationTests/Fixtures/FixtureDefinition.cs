@@ -1,6 +1,6 @@
 ﻿using Xunit;
 
-namespace DiscordBot.IntegrationTests.Fixtures;
+namespace DiscordBot.VoiceManager.IntegrationTests.Fixtures;
 
 [CollectionDefinition(nameof(TestFixture))]
 public class FixtureDefinition : ICollectionFixture<TestFixture>

@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace DiscordBot.IntegrationTests.Fixtures;
+namespace DiscordBot.VoiceManager.IntegrationTests.Fixtures;
 
 public class TestFixture
 {
