@@ -1,27 +1,27 @@
+using DiscordBot.Api.Extensions;
 using DiscordBot.Api.Services;
+using DiscordBot.Bll.Extensions;
 using DiscordBot.Dal.Extensions;
 
-namespace DiscordBot.Api;
+var builder = Host.CreateDefaultBuilder(args);
 
-class Program
+builder.ConfigureServices((context, services) =>
 {
-    public static Task Main(string[] args)
-    {
-        var host = Host
-            .CreateDefaultBuilder(args)
-            .ConfigureServices(
-                (hostBuilderContext, serviceCollection) =>
-                    new Startup(hostBuilderContext.Configuration).ConfigureServices(serviceCollection)
-            ).Build();
+    services
+        .AddApi(context.Configuration)
+        .AddBll()
+        .AddDalInfrastructure(context.Configuration)
+        .AddDalRepositories();
+});
 
-        host.Services.GetService<StartupService>()?.RunAsync();
-        host.Services.GetService<LogService>();
-        host.Services.GetService<AdminsCommandHandlerService>()?.RunAsync();
-        host.Services.GetService<VoiceManagerCommandHandlerService>()?.RunAsync();
-        host.Services.GetService<VoiceChannelService>()?.RunAsync();
+var host = builder.Build();
 
-        host.MigrateUp();
+host.Services.GetService<StartupService>()?.RunAsync();
+host.Services.GetService<LogService>()?.RunAsync();
+host.Services.GetService<AdminsCommandHandlerService>()?.RunAsync();
+host.Services.GetService<VoiceManagerCommandHandlerService>()?.RunAsync();
+host.Services.GetService<VoiceChannelService>()?.RunAsync();
 
-        return host.RunAsync();
-    }
-}
+host.MigrateUp();
+
+await host.RunAsync();
