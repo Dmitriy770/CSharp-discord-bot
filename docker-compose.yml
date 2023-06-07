@@ -2,7 +2,7 @@
 
 services:
   application:
-#    restart: unless-stopped
+    restart: always
     build:
       context: .
       dockerfile: src/DiscordBot.VoiceManager.Api/Dockerfile
@@ -19,7 +19,7 @@ services:
       - cache
   db:
     image: postgres:alpine
-    restart: unless-stopped
+    restart: always
     environment:
       POSTGRES_USER: postgres
       POSTGRES_DB: voice-channel-manager
@@ -28,7 +28,7 @@ services:
       - db:/var/lib/postgresql/data
   cache:
     image: redis:alpine
-    restart: unless-stopped
+    restart: always
     command: redis-server --save "" --appendonly no --requirepass password
     volumes:
       - cache:/data
