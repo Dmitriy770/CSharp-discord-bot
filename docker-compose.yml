@@ -1,0 +1,41 @@
+﻿version: "3.8"
+
+services:
+  application:
+    restart: always
+    build:
+      context: .
+      dockerfile: src/DiscordBot.VoiceManager.Api/Dockerfile
+    environment:
+      Discord__Token:
+      DbOptions__Host: db
+      DbOptions__User: postgres
+      DbOptions__Password: 123456
+      DbOptions__Database: voice-channel-manager
+      CacheOptions__Host: cache
+      CacheOptions__Password: password
+    depends_on: 
+      - db
+      - cache
+  db:
+    image: postgres:alpine
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: voice-channel-manager
+      POSTGRES_PASSWORD: 123456
+    volumes:
+      - db:/var/lib/postgresql/data
+  cache:
+    image: redis:alpine
+    restart: always
+    command: redis-server --save "" --appendonly no --requirepass password
+    volumes:
+      - cache:/data
+      
+volumes:
+  db:
+    driver: local
+  cache:
+    driver: local
+  

@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2E320DC9-1916-44C7-B409-627F00F971FB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiscordBot.VoiceManager.Api", "src\DiscordBot.VoiceManager.Api\DiscordBot.VoiceManager.Api.csproj", "{8C610F0A-9BEB-4307-9A32-4B5798C92728}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiscordBot.VoiceManager.Infrastructure", "src\DiscordBot.VoiceManager.Infrastructure\DiscordBot.VoiceManager.Infrastructure.csproj", "{C012DB77-1FF3-4398-8F8F-54AF6CFB870B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiscordBot.VoiceManager.Domain", "src\DiscordBot.VoiceManager.Domain\DiscordBot.VoiceManager.Domain.csproj", "{27493B20-FEE4-478D-92F5-909A2FC533ED}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{8B2F77CA-97E6-4BB6-9C39-C814A10330C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiscordBot.VoiceManager.IntegrationTests", "test\DiscordBot.VoiceManager.IntegrationTests\DiscordBot.VoiceManager.IntegrationTests.csproj", "{83E8A7E7-4F4E-4D74-94BE-E3CF4E2AF22C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8C610F0A-9BEB-4307-9A32-4B5798C92728} = {2E320DC9-1916-44C7-B409-627F00F971FB}
+		{27493B20-FEE4-478D-92F5-909A2FC533ED} = {2E320DC9-1916-44C7-B409-627F00F971FB}
+		{C012DB77-1FF3-4398-8F8F-54AF6CFB870B} = {2E320DC9-1916-44C7-B409-627F00F971FB}
+		{83E8A7E7-4F4E-4D74-94BE-E3CF4E2AF22C} = {8B2F77CA-97E6-4BB6-9C39-C814A10330C3}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8C610F0A-9BEB-4307-9A32-4B5798C92728}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C610F0A-9BEB-4307-9A32-4B5798C92728}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C610F0A-9BEB-4307-9A32-4B5798C92728}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C610F0A-9BEB-4307-9A32-4B5798C92728}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C012DB77-1FF3-4398-8F8F-54AF6CFB870B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C012DB77-1FF3-4398-8F8F-54AF6CFB870B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C012DB77-1FF3-4398-8F8F-54AF6CFB870B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C012DB77-1FF3-4398-8F8F-54AF6CFB870B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27493B20-FEE4-478D-92F5-909A2FC533ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27493B20-FEE4-478D-92F5-909A2FC533ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27493B20-FEE4-478D-92F5-909A2FC533ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27493B20-FEE4-478D-92F5-909A2FC533ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83E8A7E7-4F4E-4D74-94BE-E3CF4E2AF22C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83E8A7E7-4F4E-4D74-94BE-E3CF4E2AF22C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83E8A7E7-4F4E-4D74-94BE-E3CF4E2AF22C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83E8A7E7-4F4E-4D74-94BE-E3CF4E2AF22C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
