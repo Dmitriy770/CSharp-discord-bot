@@ -30,8 +30,8 @@ public sealed class StartupService
             var adminCommand = new SlashCommandBuilder().AddAdminCommand();
             try
             {
-                await _client.Rest.CreateGuildCommand(command.Build(), 734819128916967494);
-                await _client.Rest.CreateGuildCommand(adminCommand.Build(), 734819128916967494);
+                await _client.Rest.CreateGlobalCommand(command.Build());
+                await _client.Rest.CreateGlobalCommand(adminCommand.Build());
             }
             catch (HttpException exception)
             {
