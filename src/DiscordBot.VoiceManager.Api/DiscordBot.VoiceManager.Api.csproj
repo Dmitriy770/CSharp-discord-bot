@@ -4,7 +4,6 @@
         <TargetFramework>net7.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <UserSecretsId>dotnet-DiscordBot.Api-98311194-A2BD-4A06-ACDF-7D9D06725D78</UserSecretsId>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <RootNamespace>DiscordBot.VoiceManager.Api</RootNamespace>
     </PropertyGroup>

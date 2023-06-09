@@ -85,7 +85,10 @@ public class VoiceChannelService
     private async Task DeleteEmptyVoiceChannelAsync(SocketUser user, SocketVoiceState oldVoiceState,
         SocketVoiceState newVoiceState)
     {
-        if (user is IGuildUser guildUser && oldVoiceState.VoiceChannel is not null)
+        
+        if (user is IGuildUser guildUser &&
+            oldVoiceState.VoiceChannel is not null &&
+            oldVoiceState.VoiceChannel != newVoiceState.VoiceChannel)
         {
             try
             {
@@ -107,7 +110,9 @@ public class VoiceChannelService
     private async Task DeleteVoiceChannelOwnerAsync(SocketUser user, SocketVoiceState oldVoiceState,
         SocketVoiceState newVoiceState)
     {
-        if (user is IGuildUser guildUser && oldVoiceState.VoiceChannel is not null)
+        if (user is IGuildUser guildUser &&
+            oldVoiceState.VoiceChannel is not null &&
+            oldVoiceState.VoiceChannel != newVoiceState.VoiceChannel)
         {
             try
             {
