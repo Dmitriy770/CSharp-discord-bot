@@ -40,7 +40,6 @@ public class AdminsCommandHandlerService
         {
             var guild = guildUser.Guild;
             var subcomand = command.Data.Options.First();
-            var response = "";
             switch (subcomand.Name)
             {
                 case "create":
@@ -48,6 +47,8 @@ public class AdminsCommandHandlerService
                     var createVoiceChannel = await guild.CreateVoiceChannelAsync("create voice channel",
                         s => { s.CategoryId = category.Id; });
                     await Mediator.Send(new SetCreateVoiceChannelCommand(guild.Id, createVoiceChannel.Id));
+                    await command.RespondAsync($"New channel to create channels: {createVoiceChannel.Mention}",
+                        ephemeral: true);
                     break;
                 case "set" when subcomand.Options.First().Name == "create-voice-channel":
                     var channel = subcomand.Options.First().Options.First().Value as IChannel;
@@ -55,17 +56,16 @@ public class AdminsCommandHandlerService
                     {
                         await Mediator.Send(new SetCreateVoiceChannelCommand(guild.Id, voiceChannel.Id),
                             _cancellationToken);
-                        response = $"New channel to create channels: {voiceChannel.Mention}";
+                        await command.RespondAsync($"New channel to create channels: {voiceChannel.Mention}",
+                            ephemeral: true);
                     }
                     else
                     {
-                        response = "This channel is not a voice channel";
+                        await command.RespondAsync("This channel is not a voice channel", ephemeral: true);
                     }
 
                     break;
             }
-
-            await command.RespondAsync(response, ephemeral: true);
         }
     }
 }
