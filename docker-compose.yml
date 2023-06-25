@@ -14,7 +14,7 @@ services:
       DbOptions__Database: voice-channel-manager
       CacheOptions__Host: cache
       CacheOptions__Password: password
-    depends_on: 
+    depends_on:
       - db
       - cache
   db:
